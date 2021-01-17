@@ -1,0 +1,203 @@
+openapi: 3.0.0
+info:
+  title: Kirpputori
+  description: Platform For Selling And Buying Used Items
+  version: 1.0.0
+paths:
+  /items:
+    get:
+      parameters:
+        - in: query
+          name: category
+          description: Filter items by category
+          required: false
+          schema:
+            type: string
+            example: cars
+        - in: query
+          name: location
+          description: Filter items by location
+          required: false
+          schema:
+            type: string
+            example: Oulu, Finland
+        - in: query
+          name: date
+          description: Date of posting
+          required: false
+          schema:
+            type: string
+            format: date
+            example: 2020-10-23
+      responses:
+        '200':
+          description: Returns a list of all items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemDetails'
+    post:
+      requestBody:
+        description: Add new item
+        content:
+          multipart/form-data:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/ItemDetails'
+              - required: 
+                  - title
+                  - description
+                  - price
+                  - country
+                  - city
+                  - sellerId
+                  - categoryId
+                  - deliveryTypeId
+                  - images
+                    
+      responses:
+        '201':
+          description: New item created
+          
+  /items/{itemId}:
+    get:
+      parameters: 
+        - in: path
+          name: itemId
+          description: Id of the selected item
+          required: true
+          schema:
+            type: integer
+            example: 244
+      responses:
+        '200':
+          description: Return item by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemDetails'
+        '400':
+          description: Item doesn't exists
+          
+  /users:
+    post:
+      requestBody:
+        description: Register a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created
+        '400':
+          description: email already exists
+          
+                
+components:
+  schemas:
+    ItemDetails:
+      type: object
+      properties:
+        itemId:
+          type: integer
+          readOnly: true
+          example: 10
+        title:
+          type: string
+          example: used VW 2010
+        description:
+          type: string
+          example: Selling VW car in good condition
+        price:
+          type: number
+          format: float
+          example: 5500.50
+        country:
+          type: string
+          example: Finland
+        city:
+          type: string
+          example: Oulu
+        sellerId:
+          type: integer
+          example: 33
+        sellerName:
+          type: string
+          readOnly: true
+          example: Juhani Metsa
+        contactInfo:
+          type: string
+          format: phonenumber
+          readOnly: true
+          example: 044-777-7774
+        createdAt:
+          type: string
+          format: date
+          description: creation date
+          readOnly: true
+          example: "2021-01-01"
+        category:
+          type: string
+          readOnly: true
+          example: cars
+        categoryId:
+          type: integer
+          writeOnly: true
+          example: 2
+        deliveryType:
+          type: string
+          readOnly: true
+          example: pickup
+        deliveryTypeId:
+          type: integer
+          writeOnly: true
+          example: 1
+        image1:
+          type: string
+          description: the image name as stored in the database
+          readOnly: true
+          example: vwcar1.jpg
+        image2:
+          type: string
+          readOnly: true
+          example: vwcar2.jpg
+        image3:
+          type: string
+          readOnly: true
+          example: vwcar3.jpg
+        image4:
+          type: string
+          readOnly: true
+          example: vwcar4.jpg
+        images:
+          type: array
+          writeOnly: true
+          items:
+            type: string
+            format: binary
+    
+    User:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: John
+        lastname:
+          type: string
+          example: Smith
+        email:
+          type: string
+          format: email
+          example: 'john.smith@mail.com'
+        password:
+          type: string
+          format: password
+          writeOnly: true
+          example: johnsmithpassword
+        phone:
+          type: string
+          format: phonenumber
+          example: 044-777-7777

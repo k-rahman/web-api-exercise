@@ -39,6 +39,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/ItemDetails'
     post: #post a new item
+      security: 
+        - bearerAuth: []
       requestBody:
         description: Add new item
         content:
@@ -96,37 +98,148 @@ paths:
         '200':
           description: Item has been deleted
   
-  /users: 
-    post: #post a new user
+  /register: 
+    post: #register a new user
       requestBody:
-        description: Register a new user
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
+        $ref: '#/components/requestBodies/UserData'
       responses:
         '201':
-          description: User created
+          $ref: '#/components/responses/Created'
         '400':
-          description: email already exists
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
           
-  /auth:
-    post:
+  /auth: 
+    post: #login user
       security: 
         - basicAuth: []
       responses:
         200:
-          description: Ok
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsDGTYR6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTYOPUD9930.5JLBykylMfEiP4afph07S8FqqhUYI57W8k_bAADFFYTs
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/UnexpectedError'
+          
+  /users/me:
+    get: #get user info
+      description: Return information about the user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Request was successful
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-              
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
+    put: #update existing user
+      description: Update an existing user information
+      security: 
+        - bearerAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/UserData'
+      responses:
+        '204':
+          description: Request was successful
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
+    delete: #delete existing user
+      description: Remove user from the system
+      security: 
+      - bearerAuth: []
+      responses:
+        '204':
+          description: Request was successful
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
+        
+        
+                
 components:
+
+  requestBodies:
+    UserData:
+      description: User Request Body
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+            
+  responses:
+    Created:
+      description: Resource was created successfully
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/UserId'
+              - $ref: '#/components/schemas/ItemId'
+            
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+            
+    BadRequest:
+      description: The submitted data is incorrect
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    UnauthorizedError:
+      description: Invalide username or password/ Access token invalid or missing
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+            
+    UnexpectedError:
+      description: Internal Server Error
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Internal Server Error
+    
   securitySchemes:
     basicAuth:
       type: http
       scheme: basic
+      
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
       
   schemas:
     ItemDetails:
@@ -219,6 +332,7 @@ components:
           items:
             type: string
             format: binary
+            
     User:
       type: object
       properties:
@@ -228,20 +342,50 @@ components:
           example: 23
         firstname:
           type: string
+          minLength: 1
           example: John
         lastname:
           type: string
+          minLength: 1
           example: Smith
         email:
           type: string
+          minLength: 1
           format: email
           example: 'john.smith@mail.com'
         password:
           type: string
           format: password
+          minLength: 5
           writeOnly: true
           example: johnsmithpassword
         phone:
           type: string
+          minLength: 12
           format: phonenumber
           example: 044-777-7777
+          
+    UserId:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 4
+          
+    ItemId:
+      type: object
+      properties:
+        itemId:
+          type: integer
+          example: 5
+          
+    Error: # Schema for error response body
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message

@@ -14,12 +14,13 @@ router.get('/me', (req, res, next) => {
     userId ?
       users
         .getUserById(userId)
-        .then(result => result.userId ?
-          res.status(200).send(result) :
-          res.status(404).send({ code: '404', message: result }))
-        .catch(_ => res.sendStatus(500)) :
+        .then(result => res.status(200).send(result))
+        .catch(e => e.name === 404 ?
+          res.status(404).send({ code: '404', message: e.message }) :
+          res.sendStatus(500)
+        ) :
       res.status(401).send({ code: '401', message: 'Access token is missing or invalid!' });
-  })(req, res, next)
+  })(req, res, next);
 });
 
 // update user
@@ -30,12 +31,15 @@ router.put('/me', validateUserData, (req, res, next) => {
     userId ?
       users
         .updateUser(req.body, userId)
-        .then(result => {
-          if (!result) return res.sendStatus(204);
-          if (result === 'User Doesn\'t Exist!') return res.status(404).send({ code: '404', message: result });
-          return res.status(400).send({ code: '400', message: result });
-        })
-        .catch(_ => res.sendStatus(500)) :
+        .then(_ => res.sendStatus(204))
+        .catch(e => {
+          if (e.name === 404)
+            return res.status(404).send({ code: '404', message: e.message });
+          if (e.name === 400)
+            return res.status(400).send({ code: '400', message: e.message });
+
+          res.sendStatus(500);
+        }) :
       res.status(401).send({ code: '401', message: 'Access token is missing or invalid!' });
   })(req, res, next);
 });
@@ -48,10 +52,11 @@ router.delete('/me', (req, res, next) => {
     userId ?
       users
         .deleteUser(userId)
-        .then(result => !result ?
-          res.sendStatus(204) :
-          res.status(404).send({ code: '404', message: result }))
-        .catch(_ => res.sendStatus(500)) :
+        .then(_ => res.sendStatus(204))
+        .catch(e => e.name === 404 ?
+          res.status(404).send({ code: '404', message: e.message }) :
+          res.sendStatus(500)
+        ) :
       res.status(401).send({ code: '401', message: 'Access token is missing or invalid!' });
   })(req, res, next);
 });

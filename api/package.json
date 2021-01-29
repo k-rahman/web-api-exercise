@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -22,12 +22,22 @@
   },
   "homepage": "https://github.com/k-rahman/web-api-exercise#readme",
   "dependencies": {
+    "ajv": "^7.0.3",
+    "bcrypt": "^5.0.0",
     "config": "^3.3.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "passport": "^0.4.1",
+    "passport-http": "^0.3.0",
+    "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "chai-json-schema-ajv": "^5.2.3",
+    "mocha": "^8.2.1",
     "nodemon": "^2.0.7"
   }
 }

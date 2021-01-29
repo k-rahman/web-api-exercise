@@ -2,5 +2,6 @@
   "database": {
     "username": "TORI_USER",
     "password": "TORI_PASSWORD"
-  }
+  },
+  "jwt": "TORI_JWT_SECRET"
 }

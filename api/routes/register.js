@@ -7,11 +7,12 @@ const validateUserData = require('../middleware/validate');
 router.post('/', validateUserData, (req, res) => {
   users
     .createUser(req.body)
-    .then(result => result.insertId ?
-      res.status(201).send({ code: '201', message: result.insertId.toString() }) :
-      res.status(400).send({ code: '400', message: result })
+    .then(result => res.status(201).send({ code: '201', message: result.insertId.toString() })
     )
-    .catch(_ => res.sendStatus(500));
+    .catch(e => e.name === 400 ?
+      res.status(400).send({ code: '400', message: e.message }) :
+      res.sendStatus(500)
+    );
 });
 
 

@@ -6,11 +6,12 @@ const router = express.Router();
 
 // login user
 router.post('/', (req, res, next) => {
-  passport.authenticate('httpBasic', { session: false }, (err, jwt) => {
+  passport.authenticate('httpBasic', { session: false }, (err, result) => {
     if (err) return res.sendStatus(500);
-    jwt ?
-      res.status(200).send({ token: jwt }) :
-      res.status(401).send({ code: '401', message: 'Invalid email or password!' });
+
+    result.message ?
+      res.status(401).send({ code: '401', message: result.message }) :
+      res.status(200).send({ token: result });
   })(req, res, next);
 });
 

@@ -12,15 +12,14 @@ passport.use('httpBasic',
     try {
       const user = await users.getUserByEmail(email);
 
-      if (!user[0].userId) done(null, false);
-
       await bcrypt.compare(password, user[0].password) ?
         done(null, jwt.sign({ userId: user[0].userId }, config.get('jwt'))) :
-        done(null, false);
+        done(null, { name: 401, message: 'Invalid email or password!' });
     }
     catch (e) {
-      console.log(e);
-      done(e);
+      e.message ?
+        done(null, { name: 401, message: 'Invalid email or password!' }) :
+        done(e);
     }
   })
 );

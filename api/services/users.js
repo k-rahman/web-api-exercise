@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const db = require('../db/index');
+const error = require('../utils/errors');
 
 // return all users
 const getAllUsers = async _ => {
@@ -14,7 +15,8 @@ const getAllUsers = async _ => {
 const getUserById = async userId => {
   const user = await db.query('SELECT * FROM users WHERE userId = ? ', userId);
 
-  if (user.length === 0) return 'User Doesn\'t Exist!';
+  if (user.length === 0)
+    throw error(404, 'User Doesn\'t Exist!');
 
   delete user[0].password;
 
@@ -25,7 +27,7 @@ const getUserById = async userId => {
 const getUserByEmail = async email => {
   const user = await db.query('SELECT * FROM users WHERE email = ?', email);
 
-  if (user.length === 0) return 'User Doesn\'t Exist!';
+  if (user.length === 0) throw error(404, 'User Doesn\'t Exist!');
 
   return user;
 }
@@ -43,9 +45,9 @@ const createUser = async newUserData => {
     phone
   ];
 
-  const insertResult = await db.query('SELECT email FROM users WHERE email = ?', email);
+  const user = await db.query('SELECT * FROM users WHERE email = ?', email);
 
-  if (insertResult.length > 0) return 'Email Already Exists!';
+  if (user.length > 0) throw error(400, 'Email Already Exists!');
 
   return await db.query('INSERT INTO users VALUES (?)', newUser);
 };
@@ -64,22 +66,19 @@ const updateUser = async (userData, userId) => {
   ];
 
   // check if user exists
-  const user = await getUserById(userId);
-
-  if (!user.userId) return 'User Doesn\'t Exist!';
+  await getUserById(userId);
 
   const userEmail = await db.query('SELECT email FROM users WHERE email = ? and userId <> ?', email, userId);
 
-  if (userEmail.length > 0) return 'Email Already Exists!';
+  if (userEmail.length > 0)
+    throw error(400, 'Email Already Exists!');
 
   await db.query('UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ?, phone = ? WHERE userId = ?', ...updatedUser);
 };
 
 // delete user
 const deleteUser = async userId => {
-  const user = await getUserById(userId);
-
-  if (!user.userId) return 'User Doesn\'t Exists';
+  await getUserById(userId);
 
   await db.query('DELETE FROM users WHERE userId = ?', userId);
 };

@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+
 const db = require('../db/index');
 const error = require('../utils/errors');
 
@@ -65,9 +66,6 @@ const updateUser = async (userData, userId) => {
     userId
   ];
 
-  // check if user exists
-  await getUserById(userId);
-
   const userEmail = await db.query('SELECT email FROM users WHERE email = ? and userId <> ?', email, userId);
 
   if (userEmail.length > 0)
@@ -78,8 +76,6 @@ const updateUser = async (userData, userId) => {
 
 // delete user
 const deleteUser = async userId => {
-  await getUserById(userId);
-
   await db.query('DELETE FROM users WHERE userId = ?', userId);
 };
 

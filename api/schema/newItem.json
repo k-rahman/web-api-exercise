@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://kirpputori.com/newItem.json",
+  "type": "object",
+  "title": "The root schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": {},
+  "examples": [
+    {
+      "title": "used VW 2010",
+      "description": "Selling VW car in good condition",
+      "price": "5500.5",
+      "country": "Finland",
+      "city": "Oulu",
+      "category": "1",
+      "deliveryType": "1",
+      "images": [
+        "./public/uploads/c45445-454-454-454-car-pic.jpg"
+      ]
+    }
+  ],
+  "required": [
+    "title",
+    "description",
+    "price",
+    "country",
+    "city",
+    "categoryId",
+    "deliveryTypeId",
+    "images"
+  ],
+  "properties": {
+    "title": {
+      "$id": "#/properties/title",
+      "type": "string",
+      "title": "The title schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "used VW 2010"
+      ]
+    },
+    "description": {
+      "$id": "#/properties/description",
+      "type": "string",
+      "title": "The description schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "Selling VW car in good condition"
+      ]
+    },
+    "price": {
+      "$id": "#/properties/price",
+      "type": "string",
+      "title": "The price schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "0.0",
+      "examples": [
+        "5500.5"
+      ]
+    },
+    "country": {
+      "$id": "#/properties/country",
+      "type": "string",
+      "title": "The country schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "Finland"
+      ]
+    },
+    "city": {
+      "$id": "#/properties/city",
+      "type": "string",
+      "title": "The city schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "Oulu"
+      ]
+    },
+    "categoryId": {
+      "$id": "#/properties/categoryId",
+      "type": "string",
+      "title": "The category schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "0",
+      "examples": [
+        "1"
+      ]
+    },
+    "deliveryTypeId": {
+      "$id": "#/properties/deliveryTypeId",
+      "type": "string",
+      "title": "The deliveryType schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "0",
+      "examples": [
+        "1"
+      ]
+    },
+    "images": {
+      "$id": "#/properties/images",
+      "type": "array",
+      "title": "images schema",
+      "description": "user uploaded images",
+      "maxItems": 4,
+      "minItems": 1,
+      "imageRequired": true,
+      "default": [],
+      "examples": [
+        [
+          "./public/uploads/c498bcc0-cd38-40c5-aaf1-7c63b60661ee-register.jpg"
+        ]
+      ],
+      "items": [
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "additionalProperties": false
+  }
+}

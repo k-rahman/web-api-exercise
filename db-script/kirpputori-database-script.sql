@@ -7,7 +7,7 @@ CREATE TABLE users (
 	firstname VARCHAR(50) NOT NULL,
 	lastname VARCHAR(50) NOT NULL,
 	email VARCHAR(50) NOT NULL,
-	password VARCHAR(50) NOT NULL,
+	password VARCHAR(100) NOT NULL,
 	phone VARCHAR(50) NOT NULL
 );
 
@@ -37,7 +37,8 @@ CREATE TABLE items (
 	category INT UNSIGNED NOT NULL,
 	deliveryType INT UNSIGNED NOT NULL,
 	seller INT UNSIGNED NOT NULL,
-	createAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+	createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT FOREIGN KEY 
 		(category)
 		REFERENCES categories(categoryId),
@@ -56,4 +57,7 @@ INSERT INTO users (firstname, lastname, email, password, phone)
 
 INSERT INTO items (title, description, price, country, city, img1, category, deliveryType, seller) 
 	VALUES ('used VW', 'Very good condition 1990 VW', 500, 'Finland', 'Oulu', '/uploads/vw.jpg', 1, 1, 1);
+
+DELETE FROM users;
+DELETE FROM items;
 

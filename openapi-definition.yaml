@@ -3,6 +3,8 @@ info:
   title: Kirpputori
   description: Platform For Selling And Buying Used Items
   version: 1.0.0
+  
+  
 paths:
   /items:
     get: #get all items
@@ -12,15 +14,22 @@ paths:
           description: Filter items by category
           required: false
           schema:
-            type: string
+            type: integer
             example: cars
         - in: query
-          name: location
-          description: Filter items by location
+          name: country
+          description: Filter items by country
           required: false
           schema:
             type: string
-            example: Oulu, Finland
+            example: Finland
+        - in: query
+          name: city
+          description: Filter items by city
+          required: false
+          schema:
+            type: string
+            example: Oulu
         - in: query
           name: date
           description: Date of posting
@@ -28,7 +37,7 @@ paths:
           schema:
             type: string
             format: date
-            example: 2020-10-23
+            example: "2020-10-23"
       responses:
         '200':
           description: Returns a list of all items
@@ -37,19 +46,27 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ItemDetails'
+                  $ref: '#/components/schemas/Item'
     post: #post a new item
       security: 
         - bearerAuth: []
       requestBody:
-        description: Add new item
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ItemDetails'
+        $ref: '#/components/requestBodies/ItemData'
       responses:
         '201':
           description: New item created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemId'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
           
   /items/{itemId}: 
     get: #get an item by id
@@ -67,9 +84,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ItemDetails'
-        '400':
-          description: Item doesn't exists
+                $ref: '#/components/schemas/Item'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
     put: #update an item by id
       parameters: 
         - in: path
@@ -78,14 +97,23 @@ paths:
           schema:
             type: integer
             example: 34
+      security: 
+        - bearerAuth: []
       requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ItemDetails'
+        $ref: '#/components/requestBodies/ItemData'
       responses:
-        200:
-          description: Item has been updated
+        '204':
+          description: Item was updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
     delete: #delete an item by id
       parameters: 
         - in: path
@@ -94,9 +122,73 @@ paths:
           schema:
             type: integer
             example: 34
+      security: 
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Item was deleted successfully
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
+  
+  /categories: 
+    get:  #return categories
+      description: Return all items' categories
       responses:
         '200':
-          description: Item has been deleted
+          description: Returned all categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    categoryId:
+                      type: integer
+                      example: 4
+                    name:
+                      type: string
+                      example: cars
+                    icon:
+                      type: string
+                      example: 44.jpg
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
+    
+  /deliveryTypes: 
+    get:  #return deliveryTypes
+      description: Return all items' delivery types
+      responses:
+        '200':
+          description: Returned all delivery types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    deliveryTypeId:
+                      type: integer
+                      example: 2
+                    name:
+                      type: string
+                      example: pickup
+                    icon:
+                      type: string
+                      example: 4.jpg
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
   
   /register: 
     post: #register a new user
@@ -104,7 +196,11 @@ paths:
         $ref: '#/components/requestBodies/UserData'
       responses:
         '201':
-          $ref: '#/components/responses/Created'
+          description: New user was created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserId'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -180,12 +276,17 @@ paths:
           $ref: '#/components/responses/UnexpectedError'
         
         
-                
 components:
-
   requestBodies:
+    ItemData:
+      description: Item information
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/Item'
     UserData:
-      description: User Request Body
+      description: User information
       required: true
       content:
         application/json:
@@ -193,15 +294,6 @@ components:
             $ref: '#/components/schemas/User'
             
   responses:
-    Created:
-      description: Resource was created successfully
-      content:
-        application/json:
-          schema:
-            oneOf:
-              - $ref: '#/components/schemas/UserId'
-              - $ref: '#/components/schemas/ItemId'
-            
     NotFound:
       description: The specified resource was not found
       content:
@@ -220,6 +312,13 @@ components:
     
     UnauthorizedError:
       description: Invalide username or password/ Access token invalid or missing
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+            
+    Forbidden:
+      description: User isn't authorized to preform action on the resource
       content:
         application/json:
           schema:
@@ -244,7 +343,7 @@ components:
       bearerFormat: JWT
       
   schemas:
-    ItemDetails:
+    Item:
       type: object
       required: 
         - title
@@ -277,9 +376,6 @@ components:
         city:
           type: string
           example: Oulu
-        sellerId:
-          type: integer
-          example: 33
         sellerName:
           type: string
           readOnly: true
@@ -289,42 +385,20 @@ components:
           format: phonenumber
           readOnly: true
           example: 044-777-7774
-        createdAt:
-          type: string
-          format: date
-          description: creation date
-          readOnly: true
-          example: "2021-01-01"
-        category:
-          type: string
-          readOnly: true
-          example: cars
-        categoryId:
-          type: integer
-          writeOnly: true
-          example: 2
-        deliveryType:
-          type: string
-          readOnly: true
-          example: pickup
-        deliveryTypeId:
-          type: integer
-          writeOnly: true
-          example: 1
-        image1:
+        img1:
           type: string
           description: the image name as stored in the database
           readOnly: true
           example: vwcar1.jpg
-        image2:
+        img2:
           type: string
           readOnly: true
           example: vwcar2.jpg
-        image3:
+        img3:
           type: string
           readOnly: true
           example: vwcar3.jpg
-        image4:
+        img4:
           type: string
           readOnly: true
           example: vwcar4.jpg
@@ -334,6 +408,34 @@ components:
           items:
             type: string
             format: binary
+        category:
+          type: string
+          readOnly: true
+          example: cars
+        categoryId:
+          type: string
+          writeOnly: true
+          example: 2
+        deliveryType:
+          type: string
+          readOnly: true
+          example: pickup
+        deliveryTypeId:
+          type: string
+          writeOnly: true
+          example: 1
+        createdAt:
+          type: string
+          format: datetime
+          description: creation date
+          readOnly: true
+          example: "2021-01-30 17:41:05"
+        updatedAt:
+          type: string
+          format: datetime
+          description: updating date
+          readOnly: true
+          example: "2021-01-30 17:41:05"
             
     User:
       type: object

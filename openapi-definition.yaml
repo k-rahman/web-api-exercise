@@ -3,12 +3,22 @@ info:
   title: Kirpputori
   description: Platform For Selling And Buying Used Items
   version: 1.0.0
+servers: 
+    - url: http://192.168.1.7:3200
+      description: Development Server
   
   
 paths:
   /items:
     get: #get all items
       parameters:
+        - in: query
+          name: keyword
+          description: Filter items based on keyword
+          required: false
+          schema:
+            type: string
+            example: used cars
         - in: query
           name: category
           description: Filter items by category
@@ -47,6 +57,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Item'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
     post: #post a new item
       security: 
         - bearerAuth: []

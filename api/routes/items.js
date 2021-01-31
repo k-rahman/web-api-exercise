@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const db = require('../db/index');
 const items = require('../services/items');
 const getImages = require('../middleware/images');
 const validate = require('../middleware/validate').validateNewItem;
 const authenticate = require('../middleware/auth');
+const removeImages = require('../utils/images');
 
 
 // return item by id
@@ -32,17 +32,20 @@ router.get('/', (req, res) => {
 });
 
 // post new item
-router.post('/', [getImages, validate, authenticate], (req, res) => {
+router.post('/', [authenticate, getImages, validate], (req, res) => {
   const { user } = req;
 
   items
     .createNewItem({ ...req.body, sellerId: user.userId })
     .then(result => res.status(201).send({ itemId: result.insertId }))
-    .catch(_ => res.sendStatus(500));
+    .catch(_ => {
+      removeImages(req.body.images);
+      res.sendStatus(500);
+    });
 });
 
 // update item
-router.put('/:itemId', [getImages, validate, authenticate], (req, res) => {
+router.put('/:itemId', [authenticate, getImages, validate], (req, res) => {
   const { itemId } = req.params;
   const { user } = req;
 
@@ -50,6 +53,8 @@ router.put('/:itemId', [getImages, validate, authenticate], (req, res) => {
     .updateItem({ ...req.body, sellerId: user.userId }, itemId)
     .then(_ => res.sendStatus(204))
     .catch(e => {
+      removeImages(req.body.images);
+
       if (e.name === 403) return res.status(403).send({ code: '403', message: e.message });
       if (e.name === 404) return res.status(404).send({ code: '404', message: e.message });
 

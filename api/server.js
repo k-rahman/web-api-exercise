@@ -14,7 +14,7 @@ const auth = require('./routes/auth');
 const app = express();
 
 // middlewares
-app.use(express.static(`${__dirname}/public/uploads`));
+app.use(express.static(`public/uploads`));
 app.use(express.json());
 app.use(cors());
 

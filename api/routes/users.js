@@ -13,7 +13,7 @@ router.get('/me', authenticate, (req, res) => {
 });
 
 // update user
-router.put('/me', [validate, authenticate], (req, res) => {
+router.put('/me', [authenticate, validate], (req, res) => {
   const { user } = req;
 
   users

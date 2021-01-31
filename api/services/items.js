@@ -1,20 +1,24 @@
-const { query } = require('express');
 const db = require('../db/index');
 const error = require('../utils/errors');
+const getSearchQuery = require('../utils/itemsQuery').getSearchQuery;
+const getSelectQuery = require('../utils/itemsQuery').getSelectQuery;
 
-// get item by itemId
+// return all items or items the satisfy search criteria
+const getItems = async query => {
+  const searchQuery = await getSearchQuery(query);
+
+  const items = await db.query(searchQuery);
+
+  if (items.length === 0)
+    throw error(404, `We couldn\'t find items with these criteria!`);
+
+  return items;
+};
+
+// return item by itemId
 const getItemById = async itemId => {
   const item =
-    await db.query(`
-    SELECT i.itemId, i.title, i.description, i.price, i.country, 
-            i.city, concat(u.firstname, ' ', u.lastname) AS 'sellerName',
-            u.phone AS 'contactInfo', i.img1, i.img2, i.img3, i.img4,
-            c.name AS category, d.name AS deliveryType, i.createdAt, i.updatedAt 
-    FROM items i
-    JOIN users u ON u.userId = i.seller
-    JOIN categories c ON c.categoryId = i.category
-    JOIN deliveryTypes d ON d.deliveryTypeId = i.deliveryType
-    WHERE itemId = ?`, itemId);
+    await db.query(`${getSelectQuery()} WHERE itemId = ?`, itemId);
 
 
   if (item.length === 0)
@@ -23,7 +27,7 @@ const getItemById = async itemId => {
   return item[0];
 };
 
-// get item by itemId & userId (check if item belong to user)
+// return item by itemId & userId (check if item belong to user)
 const getItemByUser = async (itemId, userId) => {
   const item = await getItemById(itemId);
 
@@ -86,6 +90,7 @@ const deleteItem = async (itemId, userId) => {
 }
 
 module.exports = {
+  getItems,
   getItemById,
   createNewItem,
   updateItem,

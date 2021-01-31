@@ -22,10 +22,13 @@ router.get('/:itemId', (req, res) => {
 
 // return all items // TODO
 router.get('/', (req, res) => {
-  db
-    .query('SELECT * FROM items')
-    .then(items => res.send(items))
-    .catch(err => console.log(err));
+
+  items
+    .getItems(req.query)
+    .then(items => res.status(200).send(items))
+    .catch(e => e.name === 404 ?
+      res.status(404).send({ code: '404', message: e.message }) :
+      res.sendStatus(500));
 });
 
 // post new item

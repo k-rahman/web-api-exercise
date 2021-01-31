@@ -15,22 +15,19 @@ const getSearchQuery = query => {
   selectItem += ' WHERE 1 = 1';
 
   if (keyword && keyword.length !== 0) {
-    keyword = keyword.trim().replace(' ', '|');
-    selectItem += ` AND i.title RLIKE '${keyword}' OR i.description RLIKE '${keyword}'`;
+    keyword = keyword.trim().replace(' ', '* ');
+    keyword = keyword.padEnd(keyword.length + 1, '*');
+    selectItem += ` AND MATCH (i.title, i.description) AGAINST ('${keyword}' IN BOOLEAN MODE)`;
   }
 
   if (category && category.length !== 0)
     selectItem += ` AND i.category = ${category}`;
 
-  if (country && country.length !== 0) {
-    country = country.trim().replace(' ', '|');
-    selectItem += ` AND i.country RLIKE '${country}'`;
-  }
+  if (country && country.length !== 0)
+    selectItem += ` AND i.country LIKE '%${country}%'`;
 
-  if (city && city.length !== 0) {
-    city = city.trim().replace(' ', '|');
-    selectItem += ` AND i.city RLIKE '${city}'`;
-  }
+  if (city && city.length !== 0)
+    selectItem += ` AND i.city LIKE '%${city}%'`;
 
   if (date && date.length !== 0)
     selectItem += ` AND i.createdAt LIKE '${date}%'`;

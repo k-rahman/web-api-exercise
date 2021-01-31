@@ -35,6 +35,7 @@
       "type": "string",
       "title": "The title schema",
       "description": "An explanation about the purpose of this instance.",
+      "minLength": 5,
       "default": "",
       "examples": [
         "used VW 2010"
@@ -45,6 +46,7 @@
       "type": "string",
       "title": "The description schema",
       "description": "An explanation about the purpose of this instance.",
+      "minLength": 5,
       "default": "",
       "examples": [
         "Selling VW car in good condition"
@@ -55,6 +57,7 @@
       "type": "string",
       "title": "The price schema",
       "description": "An explanation about the purpose of this instance.",
+      "minLength": 1,
       "default": "0.0",
       "examples": [
         "5500.5"
@@ -65,6 +68,7 @@
       "type": "string",
       "title": "The country schema",
       "description": "An explanation about the purpose of this instance.",
+      "minLength": 1,
       "default": "",
       "examples": [
         "Finland"
@@ -75,6 +79,7 @@
       "type": "string",
       "title": "The city schema",
       "description": "An explanation about the purpose of this instance.",
+      "minLength": 1,
       "default": "",
       "examples": [
         "Oulu"
@@ -85,6 +90,7 @@
       "type": "string",
       "title": "The category schema",
       "description": "An explanation about the purpose of this instance.",
+      "minLength": 1,
       "default": "0",
       "examples": [
         "1"
@@ -95,6 +101,7 @@
       "type": "string",
       "title": "The deliveryType schema",
       "description": "An explanation about the purpose of this instance.",
+      "minLength": 1,
       "default": "0",
       "examples": [
         "1"

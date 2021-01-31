@@ -43,16 +43,21 @@ CREATE TABLE items (
 	deliveryType INT UNSIGNED NOT NULL,
 	seller INT UNSIGNED NOT NULL,
 	createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-	updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT FOREIGN KEY 
 		(category)
-		REFERENCES categories(categoryId),
+		REFERENCES categories(categoryId)
+        ON UPDATE CASCADE,
 	CONSTRAINT FOREIGN KEY 
 		(deliveryType)
-		REFERENCES deliveryTypes(deliveryTypeId),
+		REFERENCES deliveryTypes(deliveryTypeId)
+        ON UPDATE CASCADE,
 	CONSTRAINT FOREIGN KEY 
 		(seller)
 		REFERENCES users(userId)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+        FULLTEXT (title, description)
 ) ENGINE = InnoDB;
 
 INSERT INTO categories (name) VALUE ('Cars');
@@ -63,7 +68,5 @@ INSERT INTO users (firstname, lastname, email, password, phone)
 INSERT INTO items (title, description, price, country, city, img1, category, deliveryType, seller) 
 	VALUES ('used VW', 'Very good condition 1990 VW', 500, 'Finland', 'Oulu', '/uploads/vw.jpg', 1, 1, 1);
 
-DROP TABLE users;
 DELETE FROM users;
 DELETE FROM items;
-

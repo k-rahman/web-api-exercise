@@ -41,13 +41,18 @@ CREATE TABLE items (
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT FOREIGN KEY 
 		(category)
-		REFERENCES categories(categoryId),
+		REFERENCES categories(categoryId)
+        ON UPDATE CASCADE,
 	CONSTRAINT FOREIGN KEY 
 		(deliveryType)
-		REFERENCES deliveryTypes(deliveryTypeId),
+		REFERENCES deliveryTypes(deliveryTypeId)
+        ON UPDATE CASCADE,
 	CONSTRAINT FOREIGN KEY 
 		(seller)
 		REFERENCES users(userId)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+        FULLTEXT (title, description)
 ) ENGINE = InnoDB;
 
 INSERT INTO categories (name) VALUE ('Cars');

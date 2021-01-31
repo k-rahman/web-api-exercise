@@ -17,7 +17,7 @@ passport.use('httpBasic',
         done(null, { name: 401, message: 'Invalid email or password!' });
     }
     catch (e) {
-      e.message ?
+      e.message ? // catch when user email couldn't be found
         done(null, { name: 401, message: 'Invalid email or password!' }) :
         done(e);
     }

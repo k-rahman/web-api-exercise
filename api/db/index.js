@@ -91,11 +91,11 @@ const populateTables = async () => {
   `);
 
     await dbApi.query(`
-      INSERT INTO categories (name) VALUE ('cars');
+      INSERT INTO categories (name, icon) VALUE ('cars', 'cars-icon.jpg');
   `);
 
     await dbApi.query(`
-      INSERT INTO deliveryTypes (name) VALUE ('pickup');
+      INSERT INTO deliveryTypes (name, icon) VALUE ('pickup', 'pickup-icon.jpg');
   `);
 
     await dbApi.query(`

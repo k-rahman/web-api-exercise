@@ -37,7 +37,6 @@ describe('/deliveryTypes', () => {
     it('Should return all delivery types available', async () => {
       const res = await exec();
 
-      console.log(res.body);
       expect(res.status).to.equal(200);
       expect(res.body).jsonSchema(deliveryTypesSchema);
     });

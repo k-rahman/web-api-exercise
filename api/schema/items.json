@@ -1,0 +1,250 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://kirpputori.com/items.json",
+  "type": "array",
+  "title": "Items schema",
+  "description": "The root schema comprises the entire JSON document.",
+  "default": [],
+  "examples": [
+    [
+      {
+        "itemId": 10,
+        "title": "used VW 2010",
+        "description": "Selling VW car in good condition",
+        "price": 5500.5,
+        "country": "Finland",
+        "city": "Oulu",
+        "sellerName": "Juhani Metsa",
+        "contactInfo": "044-777-7774",
+        "img1": "vwcar1.jpg",
+        "img2": "vwcar2.jpg",
+        "img3": "vwcar3.jpg",
+        "img4": "vwcar4.jpg",
+        "category": "cars",
+        "deliveryType": "pickup",
+        "createdAt": "2021-01-30 17:41:05",
+        "updatedAt": "2021-01-30 17:41:05"
+      }
+    ]
+  ],
+  "additionalItems": true,
+  "items": [
+    {
+      "$id": "#/items",
+      "type": "object",
+      "title": "The first anyOf schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": {},
+      "examples": [
+        {
+          "itemId": 10,
+          "title": "used VW 2010",
+          "description": "Selling VW car in good condition",
+          "price": 5500.5,
+          "country": "Finland",
+          "city": "Oulu",
+          "sellerName": "Juhani Metsa",
+          "contactInfo": "044-777-7774",
+          "img1": "vwcar1.jpg",
+          "img2": "vwcar2.jpg",
+          "img3": "vwcar3.jpg",
+          "img4": "vwcar4.jpg",
+          "category": "cars",
+          "deliveryType": "pickup",
+          "createdAt": "2021-01-30 17:41:05",
+          "updatedAt": "2021-01-30 17:41:05"
+        }
+      ],
+      "required": [
+        "itemId",
+        "title",
+        "description",
+        "price",
+        "country",
+        "city",
+        "sellerName",
+        "contactInfo",
+        "img1",
+        "img2",
+        "img3",
+        "img4",
+        "category",
+        "deliveryType",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "itemId": {
+          "$id": "#/items/anyOf/0/properties/itemId",
+          "type": "integer",
+          "title": "The itemId schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": 0,
+          "examples": [
+            10
+          ]
+        },
+        "title": {
+          "$id": "#/items/anyOf/0/properties/title",
+          "type": "string",
+          "title": "The title schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "used VW 2010"
+          ]
+        },
+        "description": {
+          "$id": "#/items/anyOf/0/properties/description",
+          "type": "string",
+          "title": "The description schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "Selling VW car in good condition"
+          ]
+        },
+        "price": {
+          "$id": "#/items/anyOf/0/properties/price",
+          "type": "number",
+          "title": "The price schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": 0.0,
+          "examples": [
+            5500.5
+          ]
+        },
+        "country": {
+          "$id": "#/items/anyOf/0/properties/country",
+          "type": "string",
+          "title": "The country schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "Finland"
+          ]
+        },
+        "city": {
+          "$id": "#/items/anyOf/0/properties/city",
+          "type": "string",
+          "title": "The city schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "Oulu"
+          ]
+        },
+        "sellerName": {
+          "$id": "#/items/anyOf/0/properties/sellerName",
+          "type": "string",
+          "title": "The sellerName schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "Juhani Metsa"
+          ]
+        },
+        "contactInfo": {
+          "$id": "#/items/anyOf/0/properties/contactInfo",
+          "type": "string",
+          "title": "The contactInfo schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "044-777-7774"
+          ]
+        },
+        "img1": {
+          "$id": "#/items/anyOf/0/properties/img1",
+          "type": "string",
+          "title": "The img1 schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "vwcar1.jpg"
+          ]
+        },
+        "img2": {
+          "$id": "#/items/anyOf/0/properties/img2",
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "The img2 schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "vwcar2.jpg"
+          ]
+        },
+        "img3": {
+          "$id": "#/items/anyOf/0/properties/img3",
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "The img3 schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "vwcar3.jpg"
+          ]
+        },
+        "img4": {
+          "$id": "#/items/anyOf/0/properties/img4",
+          "type": [
+            "string",
+            "null"
+          ],
+          "title": "The img4 schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "vwcar4.jpg"
+          ]
+        },
+        "category": {
+          "$id": "#/items/anyOf/0/properties/category",
+          "type": "string",
+          "title": "The category schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "cars"
+          ]
+        },
+        "deliveryType": {
+          "$id": "#/items/anyOf/0/properties/deliveryType",
+          "type": "string",
+          "title": "The deliveryType schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "pickup"
+          ]
+        },
+        "createdAt": {
+          "$id": "#/items/anyOf/0/properties/createdAt",
+          "type": "string",
+          "title": "The createdAt schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "2021-01-30 17:41:05"
+          ]
+        },
+        "updatedAt": {
+          "$id": "#/items/anyOf/0/properties/updatedAt",
+          "type": "string",
+          "title": "The updatedAt schema",
+          "description": "An explanation about the purpose of this instance.",
+          "default": "",
+          "examples": [
+            "2021-01-30 17:41:05"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  ]
+}

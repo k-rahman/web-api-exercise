@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "http://kirpputori.com/ajvResponse.json",
+  "type": "array",
+  "title": "ajv response schema",
+  "description": "error response comes from ajv when validation fails",
+  "default": [],
+  "examples": [
+    [
+      "should have required property 'title'"
+    ]
+  ],
+  "additionalItems": true,
+  "items": [
+    {
+      "$id": "#/items/0",
+      "type": "string",
+      "title": "ajv response text",
+      "description": "an item with ajv error message",
+      "default": "",
+      "examples": [
+        "should have required property 'title'"
+      ]
+    }
+  ]
+}

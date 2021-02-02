@@ -2,8 +2,8 @@
   "$schema": "http://json-schema.org/draft-07/schema",
   "$id": "http://kirpputori.com/newItem.json",
   "type": "object",
-  "title": "The root schema",
-  "description": "The root schema comprises the entire JSON document.",
+  "title": "New item schema",
+  "description": "This schema is to validate new item posted through kirpputori api",
   "default": {},
   "examples": [
     {
@@ -34,7 +34,7 @@
       "$id": "#/properties/title",
       "type": "string",
       "title": "The title schema",
-      "description": "An explanation about the purpose of this instance.",
+      "description": "Title is required with minimum length of 5 characters",
       "minLength": 5,
       "default": "",
       "examples": [
@@ -55,6 +55,7 @@
     "price": {
       "$id": "#/properties/price",
       "type": "string",
+      "pattern": "\\d*(\\.?\\d+)",
       "title": "The price schema",
       "description": "An explanation about the purpose of this instance.",
       "minLength": 1,

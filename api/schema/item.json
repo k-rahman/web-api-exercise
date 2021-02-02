@@ -13,16 +13,16 @@
       "price": 5500.5,
       "country": "Finland",
       "city": "Oulu",
-      "sellerId": 33,
       "sellerName": "Juhani Metsa",
       "contactInfo": "044-777-7774",
-      "createdAt": "2021-01-01",
+      "img1": "vwcar1.jpg",
+      "img2": "vwcar2.jpg",
+      "img3": "vwcar3.jpg",
+      "img4": "vwcar4.jpg",
       "category": "cars",
       "deliveryType": "pickup",
-      "image1": "vwcar1.jpg",
-      "image2": "vwcar2.jpg",
-      "image3": "vwcar3.jpg",
-      "image4": "vwcar4.jpg"
+      "createdAt": "2021-01-30 17:41:05",
+      "updatedAt": "2021-01-30 17:41:05"
     }
   ],
   "required": [
@@ -32,16 +32,16 @@
     "price",
     "country",
     "city",
-    "sellerId",
     "sellerName",
     "contactInfo",
-    "createdAt",
+    "img1",
+    "img2",
+    "img3",
+    "img4",
     "category",
     "deliveryType",
-    "image1",
-    "image2",
-    "image3",
-    "image4"
+    "createdAt",
+    "updatedAt"
   ],
   "properties": {
     "itemId": {
@@ -104,16 +104,6 @@
         "Oulu"
       ]
     },
-    "sellerId": {
-      "$id": "#/properties/sellerId",
-      "type": "integer",
-      "title": "The sellerId schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": 0,
-      "examples": [
-        33
-      ]
-    },
     "sellerName": {
       "$id": "#/properties/sellerName",
       "type": "string",
@@ -134,14 +124,53 @@
         "044-777-7774"
       ]
     },
-    "createdAt": {
-      "$id": "#/properties/createdAt",
+    "img1": {
+      "$id": "#/properties/img1",
       "type": "string",
-      "title": "The createdAt schema",
+      "title": "The img1 schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
       "examples": [
-        "2021-01-01"
+        "vwcar1.jpg"
+      ]
+    },
+    "img2": {
+      "$id": "#/properties/img2",
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "The img2 schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "vwcar2.jpg"
+      ]
+    },
+    "img3": {
+      "$id": "#/properties/img3",
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "The img3 schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "vwcar3.jpg"
+      ]
+    },
+    "img4": {
+      "$id": "#/properties/img4",
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "The img4 schema",
+      "description": "An explanation about the purpose of this instance.",
+      "default": "",
+      "examples": [
+        "vwcar4.jpg"
       ]
     },
     "category": {
@@ -164,44 +193,24 @@
         "pickup"
       ]
     },
-    "image1": {
-      "$id": "#/properties/image1",
+    "createdAt": {
+      "$id": "#/properties/createdAt",
       "type": "string",
-      "title": "The image1 schema",
+      "title": "The createdAt schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
       "examples": [
-        "vwcar1.jpg"
+        "2021-01-30 17:41:05"
       ]
     },
-    "image2": {
-      "$id": "#/properties/image2",
+    "updatedAt": {
+      "$id": "#/properties/updatedAt",
       "type": "string",
-      "title": "The image2 schema",
+      "title": "The updatedAt schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
       "examples": [
-        "vwcar2.jpg"
-      ]
-    },
-    "image3": {
-      "$id": "#/properties/image3",
-      "type": "string",
-      "title": "The image3 schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": "",
-      "examples": [
-        "vwcar3.jpg"
-      ]
-    },
-    "image4": {
-      "$id": "#/properties/image4",
-      "type": "string",
-      "title": "The image4 schema",
-      "description": "An explanation about the purpose of this instance.",
-      "default": "",
-      "examples": [
-        "vwcar4.jpg"
+        "2021-01-30 17:41:05"
       ]
     }
   },

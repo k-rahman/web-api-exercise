@@ -4,8 +4,8 @@
   "description": "rest api implementation (school exercise)",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
     "test": "mocha --watch"
   },
   "repository": {

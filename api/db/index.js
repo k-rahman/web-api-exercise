@@ -11,6 +11,7 @@ const dbCredentials = {
 };
 
 const pool = mysql.createPool(dbCredentials);
+console.log(`Connected to ${config.get('database.name')} ...`);
 
 const createTables = async () => {
   try {
@@ -36,31 +37,33 @@ const createTables = async () => {
       icon VARCHAR(100) NULL); 
   `);
     await dbApi.query(`
-    CREATE TABLE IF NOT EXISTS items (
-      itemId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-      title VARCHAR(100) NOT NULL,
-      description TEXT NOT NULL,
-      price FLOAT NOT NULL,
-      country VARCHAR(50) NOT NULL,
-      city VARCHAR(50) NOT NULL,
-      img1 VARCHAR(100) NOT NULL,
-      img2 VARCHAR(100) NULL,
-      img3 VARCHAR(100) NULL,
-      img4 VARCHAR(100) NULL,
-      category INT UNSIGNED NOT NULL,
-      deliveryType INT UNSIGNED NOT NULL,
-      seller INT UNSIGNED NOT NULL,
-      createAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-      CONSTRAINT FOREIGN KEY 
-        (category)
-        REFERENCES categories(categoryId),
-      CONSTRAINT FOREIGN KEY 
-        (deliveryType)
-        REFERENCES deliveryTypes(deliveryTypeId),
-      CONSTRAINT FOREIGN KEY 
-        (seller)
-        REFERENCES users(userId)
-    ) ENGINE = InnoDB;
+        CREATE TABLE IF NOT EXISTS items (
+          itemId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+          title VARCHAR(100) NOT NULL,
+          description TEXT NOT NULL,
+          price FLOAT NOT NULL,
+          country VARCHAR(50) NOT NULL,
+          city VARCHAR(50) NOT NULL,
+          img1 VARCHAR(100) NOT NULL,
+          img2 VARCHAR(100) NULL,
+          img3 VARCHAR(100) NULL,
+          img4 VARCHAR(100) NULL,
+          category INT UNSIGNED NOT NULL,
+          deliveryType INT UNSIGNED NOT NULL,
+          seller INT UNSIGNED NOT NULL,
+          createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+          updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+          CONSTRAINT FOREIGN KEY (category)
+              REFERENCES categories (categoryId)
+              ON UPDATE CASCADE,
+          CONSTRAINT FOREIGN KEY (deliveryType)
+              REFERENCES deliveryTypes (deliveryTypeId)
+              ON UPDATE CASCADE,
+          CONSTRAINT FOREIGN KEY (seller)
+              REFERENCES users (userId)
+              ON DELETE CASCADE ON UPDATE CASCADE,
+          FULLTEXT ( title , description )
+      )  ENGINE=INNODB;
   `);
   }
   catch (e) {
@@ -80,19 +83,51 @@ const dropTables = async () => {
   }
 };
 
+const populateTables = async () => {
+  try {
+    await dbApi.query(`
+      INSERT INTO users (firstname, lastname, email, password, phone)
+        VALUES ('Kimo', 'Karim', 'karim@mail.com', '12345', '044-777-7777');
+  `);
+
+    await dbApi.query(`
+      INSERT INTO categories (name) VALUE ('cars');
+  `);
+
+    await dbApi.query(`
+      INSERT INTO deliveryTypes (name) VALUE ('pickup');
+  `);
+
+    await dbApi.query(`
+      INSERT INTO items (title, description, price, country, city, img1, category, deliveryType, seller) 
+        VALUES ('used VW', 'Very good condition 1990 VW', 500, 'Finland', 'Oulu', '848755-car.jpg', 1, 1, 1);
+  `);
+  }
+  catch (e) {
+    console.log(e);
+  }
+};
+
+const cleanTables = async () => {
+  await dbApi.query('DELETE FROM users');
+  await dbApi.query('DELETE FROM categories');
+  await dbApi.query('DELETE FROM deliveryTypes');
+  await dbApi.query('DELETE FROM items');
+};
+
 const dbApi = {
   create: () => createTables(),
   drop: () => dropTables(),
-  query: (query, ...params) => {
-    return new Promise((resolve, reject) => {
+  populate: () => populateTables(),
+  clean: () => cleanTables(),
+  query: (query, ...params) =>
+    new Promise((resolve, reject) =>
       pool.query(query, params, (err, result) => {
-        if (err)
-          reject(err);
+        if (err) reject(err);
 
         resolve(result);
-      });
-    });
-  },
+      })
+    ),
   close: () => pool.end()
 }
 

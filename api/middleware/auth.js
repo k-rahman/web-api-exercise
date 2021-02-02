@@ -2,10 +2,10 @@ const passport = require('passport');
 const httpBasic = require('passport-http').BasicStrategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const config = require('config');
 const users = require('../services/users');
+const generateToken = require('../utils/token');
 
 passport.use('httpBasic',
   new httpBasic(async (email, password, done) => {
@@ -13,7 +13,7 @@ passport.use('httpBasic',
       const user = await users.getUserByEmail(email);
 
       await bcrypt.compare(password, user[0].password) ?
-        done(null, jwt.sign({ userId: user[0].userId }, config.get('jwt'))) :
+        done(null, await generateToken(user[0].userId)) :
         done(null, { name: 401, message: 'Invalid email or password!' });
     }
     catch (e) {
@@ -35,7 +35,7 @@ passport.use(new JwtStrategy({
 
     userId ?
       users
-        .getUserById(payload.userId)
+        .getUserById(payload.userId) // throw error if user doesn't exist
         .then(user => done(null, user))
         .catch(e => done(e)) :
       done(null, false);
@@ -47,7 +47,7 @@ passport.use(new JwtStrategy({
 const authenticate = (req, res, next) => {
   passport.authenticate('jwt', (err, user) => {
     if (err)
-      if (err.name === 404)
+      if (err.name === 404) // if token is valid, but user doesn't exist anymore
         return res.status(404).send({ code: '404', message: err.message });
       else
         return res.sendStatus(500);

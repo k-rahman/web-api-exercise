@@ -7,7 +7,7 @@ servers:
     - url: http://192.168.1.7:3200
       description: Development Server
   
-  
+
 paths:
   /items:
     get: #get all items
@@ -204,7 +204,7 @@ paths:
         '500':
           $ref: '#/components/responses/UnexpectedError'
   
-  /register: 
+  /register:
     post: #register a new user
       requestBody:
         $ref: '#/components/requestBodies/UserData'
@@ -220,7 +220,7 @@ paths:
         '500':
           $ref: '#/components/responses/UnexpectedError'
           
-  /auth: 
+  /auth:
     post: #login user
       security: 
         - basicAuth: []

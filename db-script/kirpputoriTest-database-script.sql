@@ -1,6 +1,6 @@
-Drop DATABASE IF EXISTS kirpputoriTest;
-CREATE DATABASE IF NOT EXISTS kirpputoriTest;
-USE kirpputoriTest;
+Drop DATABASE IF EXISTS kirpputori_tests;
+CREATE DATABASE IF NOT EXISTS kirpputori_tests;
+USE kirpputori_tests;
 
 DROP TABLE items;
 DROP TABLE users;
@@ -28,37 +28,33 @@ CREATE TABLE deliveryTypes (
 	icon VARCHAR(100) NULL
 );
 
-CREATE TABLE items (
-	itemId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	title VARCHAR(100) NOT NULL,
-	description TEXT NOT NULL,
-	price FLOAT NOT NULL,
-	country VARCHAR(50) NOT NULL,
-	city VARCHAR(50) NOT NULL,
-	img1 VARCHAR(100) NOT NULL,
-	img2 VARCHAR(100) NULL,
-	img3 VARCHAR(100) NULL,
-	img4 VARCHAR(100) NULL,
-	category INT UNSIGNED NOT NULL,
-	deliveryType INT UNSIGNED NOT NULL,
-	seller INT UNSIGNED NOT NULL,
-	createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE IF NOT EXISTS items (
+    itemId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    price FLOAT NOT NULL,
+    country VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    img1 VARCHAR(100) NOT NULL,
+    img2 VARCHAR(100) NULL,
+    img3 VARCHAR(100) NULL,
+    img4 VARCHAR(100) NULL,
+    category INT UNSIGNED NOT NULL,
+    deliveryType INT UNSIGNED NOT NULL,
+    seller INT UNSIGNED NOT NULL,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-	CONSTRAINT FOREIGN KEY 
-		(category)
-		REFERENCES categories(categoryId)
+    CONSTRAINT FOREIGN KEY (category)
+        REFERENCES categories (categoryId)
         ON UPDATE CASCADE,
-	CONSTRAINT FOREIGN KEY 
-		(deliveryType)
-		REFERENCES deliveryTypes(deliveryTypeId)
+    CONSTRAINT FOREIGN KEY (deliveryType)
+        REFERENCES deliveryTypes (deliveryTypeId)
         ON UPDATE CASCADE,
-	CONSTRAINT FOREIGN KEY 
-		(seller)
-		REFERENCES users(userId)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-        FULLTEXT (title, description)
-) ENGINE = InnoDB;
+    CONSTRAINT FOREIGN KEY (seller)
+        REFERENCES users (userId)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FULLTEXT ( title , description )
+)  ENGINE=INNODB;
 
 INSERT INTO categories (name) VALUE ('Cars');
 INSERT INTO deliveryTypes (name) VALUE ('Pickup');

@@ -12,7 +12,7 @@ const getImages = (req, res, next) => {
       });
     }
     catch (e) {
-      console.log(e);
+      // console.log('images are missing!');
     }
 
     next();

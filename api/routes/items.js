@@ -8,6 +8,17 @@ const authenticate = require('../middleware/auth');
 const removeImages = require('../utils/images');
 
 
+// return all items
+router.get('/', (req, res) => {
+
+  items
+    .getItems(req.query)
+    .then(items => res.status(200).send(items))
+    .catch(e => e.name === 404 ?
+      res.status(404).send({ code: '404', message: e.message }) :
+      res.sendStatus(500));
+});
+
 // return item by id
 router.get('/:itemId', (req, res) => {
   const { itemId } = req.params;
@@ -15,17 +26,6 @@ router.get('/:itemId', (req, res) => {
   items
     .getItemById(itemId)
     .then(item => res.status(200).send(item))
-    .catch(e => e.name === 404 ?
-      res.status(404).send({ code: '404', message: e.message }) :
-      res.sendStatus(500));
-});
-
-// return all items // TODO
-router.get('/', (req, res) => {
-
-  items
-    .getItems(req.query)
-    .then(items => res.status(200).send(items))
     .catch(e => e.name === 404 ?
       res.status(404).send({ code: '404', message: e.message }) :
       res.sendStatus(500));

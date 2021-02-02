@@ -30,5 +30,5 @@ app.use('/auth', auth);
 
 const PORT = process.env.PORT || 3200;
 module.exports = app.listen(PORT, () => {
-  console.log(`Server is running on http://${os.networkInterfaces().enp5s0[0].address}:${PORT} ...`);
+  console.log(`Server is running on ${PORT} ...`);
 });

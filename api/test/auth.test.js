@@ -15,10 +15,19 @@ chai.use(chaiHttp);
 chai.use(chaitAjv);
 
 describe('/auth', () => {
+
   let token;
   let usernamePassword;
   let user;
 
+  beforeEach(async () => {
+    await db.create();
+  });
+
+  afterEach(async () => {
+    await db.drop();
+    server.close();
+  });
 
   describe('POST /', () => {
 
@@ -30,14 +39,9 @@ describe('/auth', () => {
         password: "johnsmithpassword",
         phone: "044-777-7777"
       };
-      await db.create();
+
       const { insertId: userId } = await users.createUser(user);
       token = await generateToken(userId);
-    });
-
-    afterEach(async () => {
-      await db.drop();
-      server.close();
     });
 
     const exec = () => {

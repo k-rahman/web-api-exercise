@@ -365,7 +365,6 @@ components:
         - price
         - country
         - city
-        - sellerId
         - categoryId
         - deliveryTypeId
         - images

@@ -5,10 +5,11 @@ const userSchema = require('../schema/newUser.json');
 const itemSchema = require('../schema/newItem.json');
 
 
-const ajv = new Ajv({ strictTuples: false });
+const ajv = new Ajv({ strictTuples: false, strict: false });
 
 // add custom error message to images
-ajv.addKeyword('imageRequired', {
+ajv.addKeyword({
+  keyword: 'imageRequired',
   validate: validate = (schema, images) => {
     validate.errors = [{ keyword: 'min', message: 'Images field is required and must contain at least 1 image' }];
     return images.length > 0;
@@ -43,5 +44,6 @@ const validateNewItem = (req, res, next) => {
 
 module.exports = {
   validateUserData,
-  validateNewItem
+  validateNewItem,
+  ajv
 }

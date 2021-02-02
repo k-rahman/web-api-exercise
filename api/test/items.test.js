@@ -13,7 +13,7 @@ const generateToken = require('../utils/token');
 const { ajv } = require('../middleware/validate'); // use same instance of ajv with chai
 const itemsSchema = require('../schema/items.json');
 const itemSchema = require('../schema/item.json');
-const newItemSchema = require('../schema/newItem.json');
+const ajvSchema = require('../schema/ajvResponse.json');
 const itemIdSchema = require('../schema/itemId.json');
 const errorSchema = require('../schema/errorResponse.json');
 
@@ -26,6 +26,7 @@ describe('/items', () => {
 
   beforeEach(async () => {
     await db.create();
+    await db.populate();
   });
 
   afterEach(async () => {
@@ -38,7 +39,6 @@ describe('/items', () => {
     let path;
 
     beforeEach(async () => {
-      await db.populate();
       path = '/items';
     });
 
@@ -87,14 +87,17 @@ describe('/items', () => {
   // GET item by id
   describe('GET /:itemId', () => {
 
+    let path;
+
     const exec = async () => {
       return await chai
         .request(server)
-        .get('/items/1');
+        .get(path);
     };
 
     it('Should return item with the given id', async () => {
-      await db.populate();
+      path = '/items/1';
+
 
       const res = await exec();
 
@@ -103,6 +106,8 @@ describe('/items', () => {
     });
 
     it('Should return 404, if item doesn\'t exist', async () => {
+      path = '/items/2';
+
       const res = await exec();
 
       expect(res.status).to.equal(404);
@@ -123,20 +128,11 @@ describe('/items', () => {
 
   // POST new item
   describe('POST /', () => {
+
     let newItem;
     let token;
 
-    const exec = async () => {
-      return await chai
-        .request(server)
-        .post('/items')
-        .set('Authorization', `Bearer ${token}`)
-        .send(newItem)
-
-    };
-
     beforeEach(async () => {
-      await db.populate();
       token = await generateToken(1);
       newItem = {
         title: 'used BMW',
@@ -151,6 +147,15 @@ describe('/items', () => {
         deliveryTypeId: '1',
       };
     });
+
+    const exec = async () => {
+      return await chai
+        .request(server)
+        .post('/items')
+        .set('Authorization', `Bearer ${token}`)
+        .send(newItem)
+
+    };
 
     it('Should return 201 and itemId object, if item was created successfully', async () => {
       const res = await exec();
@@ -172,7 +177,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if title is less than 5 characters', async () => {
@@ -181,7 +186,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if description is missing', async () => {
@@ -190,7 +195,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if description is less than 5 characters', async () => {
@@ -199,7 +204,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if price is missing', async () => {
@@ -208,7 +213,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if price is not in \d*(\.?\d+)', async () => {
@@ -217,7 +222,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if country is missing', async () => {
@@ -226,7 +231,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if country is less than 1 character', async () => {
@@ -235,7 +240,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if city is missing', async () => {
@@ -244,7 +249,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if city is less than 1 character', async () => {
@@ -253,7 +258,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if images is missing', async () => {
@@ -262,7 +267,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if images is less than one image', async () => {
@@ -271,7 +276,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if categoryId is missing', async () => {
@@ -280,7 +285,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if deliveryTypeId is missing', async () => {
@@ -289,27 +294,18 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
   });
 
   // PUT item
   describe('PUT /:itemId', () => {
+
     let item;
-    let token;
     let path;
-
-    const exec = () => {
-      return chai
-        .request(server)
-        .put(path)
-        .set('Authorization', `Bearer ${token}`)
-        .send(item)
-
-    };
+    let token;
 
     beforeEach(async () => {
-      await db.populate();
       path = '/items/1';
       token = await generateToken(1);
       item = {
@@ -326,6 +322,15 @@ describe('/items', () => {
       };
     });
 
+    const exec = () => {
+      return chai
+        .request(server)
+        .put(path)
+        .set('Authorization', `Bearer ${token}`)
+        .send(item)
+
+    };
+
     const user = {
       firstname: "John",
       lastname: "Smith",
@@ -341,20 +346,13 @@ describe('/items', () => {
       expect(res.body).to.be.empty;
     });
 
-    it('Should return 204, if item is updated successfully', async () => {
-      const res = await exec();
-
-      expect(res.status).to.equal(204);
-      expect(res.body).to.be.empty;
-    });
-
     it('Should return 400, if title is missing', async () => {
       delete item.title;
 
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(newItemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if title is less than 5 characters', async () => {
@@ -363,7 +361,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if description is missing', async () => {
@@ -372,7 +370,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if description is less than 5 characters', async () => {
@@ -381,7 +379,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if price is missing', async () => {
@@ -390,7 +388,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if price is not in \d*(\.?\d+)', async () => {
@@ -399,7 +397,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if country is missing', async () => {
@@ -408,7 +406,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if country is less than 1 character', async () => {
@@ -417,7 +415,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if city is missing', async () => {
@@ -426,7 +424,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if city is less than 1 character', async () => {
@@ -435,7 +433,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if images is missing', async () => {
@@ -444,7 +442,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if images is less than one image', async () => {
@@ -453,7 +451,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if categoryId is missing', async () => {
@@ -462,7 +460,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 400, if deliveryTypeId is missing', async () => {
@@ -471,7 +469,7 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(400);
-      expect(res.body).to.not.be.jsonSchema(itemSchema);
+      expect(res.body).to.be.jsonSchema(ajvSchema);
     });
 
     it('Should return 401, if token is missing/invalid', async () => {
@@ -506,6 +504,55 @@ describe('/items', () => {
       const res = await exec();
 
       expect(res.status).to.equal(404);
+      expect(res.body).to.be.jsonSchema(errorSchema);
+    });
+  });
+
+  describe('DELETE /:itemId', () => {
+    let token;
+    let path;
+
+    beforeEach(async () => {
+      path = '/items/1';
+      token = await generateToken(1);
+    });
+
+    const exec = () => {
+      return chai
+        .request(server)
+        .delete(path)
+        .set('Authorization', `Bearer ${token}`);
+    };
+
+    const user = {
+      firstname: "John",
+      lastname: "Smith",
+      email: "john.smith@mail.com",
+      password: "johnsmithpassword",
+      phone: "044-777-7777"
+    };
+
+    it('Should return 204, if item is deleted successfully', async () => {
+      const res = await exec();
+
+      expect(res.status).to.equal(204);
+    });
+
+    it('Should return 404, if item doesn\'t exist', async () => {
+      path = '/items/2';
+
+      const res = await exec();
+
+      expect(res.status).to.equal(404);
+      expect(res.body).to.be.jsonSchema(errorSchema);
+    });
+
+    it('Should return 403, if item doesn\' belong to the user', async () => {
+      const { insertId: userId } = await users.createUser(user);
+      token = await generateToken(userId);
+      const res = await exec();
+
+      expect(res.status).to.equal(403);
       expect(res.body).to.be.jsonSchema(errorSchema);
     });
   });

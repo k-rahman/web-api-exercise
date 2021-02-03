@@ -3,16 +3,20 @@ info:
   title: Kirpputori
   description: Platform For Selling And Buying Used Items
   version: 1.0.0
-servers: 
-    - url: http://192.168.1.7:3200
-      description: Development Server
-    - url: https://kirppu-tori.herokuapp.com/
-      description: Production server
-  
-
+  contact:
+    name: Karim
+servers:
+  - url: 'http://192.168.1.7:3200'
+    description: Development Server
+  - url: 'https://kirppu-tori.herokuapp.com'
+    description: Production server
 paths:
   /items:
-    get: #get all items
+    get:
+      operationId: 'GET:kirpputori/items'
+      description: return all items
+      tags:
+        - items
       parameters:
         - in: query
           name: keyword
@@ -49,7 +53,7 @@ paths:
           schema:
             type: string
             format: date
-            example: "2020-10-23"
+            example: '2020-10-23'
       responses:
         '200':
           description: Returns a list of all items
@@ -63,8 +67,12 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-    post: #post a new item
-      security: 
+    post:
+      operationId: 'POST:kirpputori/items'
+      description: Create a new item
+      tags:
+        - items
+      security:
         - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/ItemData'
@@ -77,16 +85,20 @@ paths:
                 $ref: '#/components/schemas/ItemId'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '404':
-          $ref: '#/components/responses/NotFound'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-          
-  /items/{itemId}: 
-    get: #get an item by id
-      parameters: 
+
+  '/items/{itemId}':
+    get:
+      operationId: 'GET:kirpputori/items/itemId'
+      description: Return item by Id
+      tags:
+        - item
+      parameters:
         - in: path
           name: itemId
           description: Id of the selected item
@@ -105,15 +117,19 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-    put: #update an item by id
-      parameters: 
+    put:
+      operationId: 'PUT:kirpputori/item/itemId'
+      description: Update item by Id
+      tags:
+        - item
+      parameters:
         - in: path
           name: itemId
           required: true
           schema:
             type: integer
             example: 34
-      security: 
+      security:
         - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/ItemData'
@@ -130,15 +146,19 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-    delete: #delete an item by id
-      parameters: 
+    delete:
+      operationId: 'DELETE:kirpputori/items/itemId'
+      description: Delete item by Id
+      tags:
+        - item
+      parameters:
         - in: path
           name: itemId
           required: true
           schema:
             type: integer
             example: 34
-      security: 
+      security:
         - bearerAuth: []
       responses:
         '204':
@@ -151,10 +171,14 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-  
-  /categories: 
-    get:  #return categories
+
+  /categories:
+    get:
       description: Return all items' categories
+      operationId: 'GET:kirpputori/categories'
+      tags:
+        - cat
+      
       responses:
         '200':
           description: Returned all categories
@@ -178,10 +202,13 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-    
-  /deliveryTypes: 
-    get:  #return deliveryTypes
+
+  /deliveryTypes:
+    get:
       description: Return all items' delivery types
+      operationId: 'GET:kirpputori/deliveryTypes'
+      tags:
+        - delivery
       responses:
         '200':
           description: Returned all delivery types
@@ -205,9 +232,13 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-  
+
   /register:
-    post: #register a new user
+    post:
+      operationId: 'POST:kirpputori/users/register'
+      description: Create a new user
+      tags:
+        - register
       requestBody:
         $ref: '#/components/requestBodies/UserData'
       responses:
@@ -221,13 +252,18 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-          
+      summary: ''
+
   /auth:
-    post: #login user
-      security: 
+    post:
+      operationId: 'POST:kirpputori/users/auth'
+      description: Login a user
+      tags:
+        - login
+      security:
         - basicAuth: []
       responses:
-        200:
+        '200':
           description: User logged in successfully
           content:
             application/json:
@@ -237,13 +273,13 @@ paths:
                   token:
                     type: string
                     example: eyJhbGciOiJIUzI1NiIsDGTYR6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTYOPUD9930.5JLBykylMfEiP4afph07S8FqqhUYI57W8k_bAADFFYTs
-        401:
+        '401':
           $ref: '#/components/responses/UnauthorizedError'
-        500:
+        '500':
           $ref: '#/components/responses/UnexpectedError'
-          
+      
   /users/me:
-    get: #get user info
+    get:
       description: Return information about the user
       security:
         - bearerAuth: []
@@ -260,38 +296,47 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-    put: #update existing user
+      operationId: 'GET:kirpputori/users'
+      tags:
+        - users
+    put:
       description: Update an existing user information
-      security: 
+      operationId: 'PUT:kirpputori/users'
+      tags:
+        - users
+      security:
         - bearerAuth: []
       requestBody:
         $ref: '#/components/requestBodies/UserData'
       responses:
         '204':
           description: Request was successful
-        '404':
-          $ref: '#/components/responses/NotFound'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-    delete: #delete existing user
+    delete:
       description: Remove user from the system
-      security: 
-      - bearerAuth: []
+      operationId: 'DELETE:kirpputori/users'
+      tags:
+        - users
+      security:
+        - bearerAuth: []
       responses:
         '204':
           description: Request was successful
-        '404':
-          $ref: '#/components/responses/NotFound'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/UnexpectedError'
-        
-        
+
+
 components:
   requestBodies:
     ItemData:
@@ -308,7 +353,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/User'
-            
   responses:
     NotFound:
       description: The specified resource was not found
@@ -316,7 +360,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-            
     BadRequest:
       description: The submitted data is incorrect
       content:
@@ -325,21 +368,18 @@ components:
             oneOf:
               - $ref: '#/components/schemas/Error'
               - $ref: '#/components/schemas/JsonSchemaValidation'
-    
     UnauthorizedError:
       description: Invalide username or password/ Access token invalid or missing
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-            
     Forbidden:
       description: User isn't authorized to preform action on the resource
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-            
     UnexpectedError:
       description: Internal Server Error
       content:
@@ -347,21 +387,18 @@ components:
           schema:
             type: string
             example: Internal Server Error
-    
   securitySchemes:
     basicAuth:
       type: http
       scheme: basic
-      
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      
   schemas:
     Item:
       type: object
-      required: 
+      required:
         - title
         - description
         - price
@@ -384,7 +421,7 @@ components:
         price:
           type: number
           format: float
-          example: 5500.50
+          example: 5500.5
         country:
           type: string
           example: Finland
@@ -430,7 +467,7 @@ components:
         categoryId:
           type: string
           writeOnly: true
-          example: 1
+          example: '1'
         deliveryType:
           type: string
           readOnly: true
@@ -438,20 +475,37 @@ components:
         deliveryTypeId:
           type: string
           writeOnly: true
-          example: 1
+          example: '1'
         createdAt:
           type: string
           format: datetime
           description: creation date
           readOnly: true
-          example: "2021-01-30 17:41:05"
+          example: '2021-01-30 17:41:05'
         updatedAt:
           type: string
           format: datetime
           description: updating date
           readOnly: true
-          example: "2021-01-30 17:41:05"
-            
+          example: '2021-01-30 17:41:05'
+      x-examples:
+        example-1:
+          itemId: 10
+          title: used VW 2010
+          description: Selling VW car in good condition
+          price: 5500.5
+          country: Finland
+          city: Oulu
+          sellerName: Juhani Metsa
+          contactInfo: 044-777-7774
+          img1: vwcar1.jpg
+          img2: vwcar2.jpg
+          img3: vwcar3.jpg
+          img4: vwcar4.jpg
+          category: cars
+          deliveryType: pickup
+          createdAt: '2021-01-30 17:41:05'
+          updatedAt: '2021-01-30 17:41:05'
     User:
       type: object
       properties:
@@ -471,7 +525,7 @@ components:
           type: string
           minLength: 1
           format: email
-          example: 'john.smith@mail.com'
+          example: john.smith@mail.com
         password:
           type: string
           format: password
@@ -483,22 +537,32 @@ components:
           minLength: 12
           format: phonenumber
           example: 044-777-7777
-          
+      x-examples:
+        example-1:
+          userId: 23
+          firstname: John
+          lastname: Smith
+          email: john.smith@mail.com
+          phone: 044-777-7777
     UserId:
       type: object
       properties:
         userId:
           type: integer
           example: 4
-          
+      x-examples:
+        example-1:
+          userId: 4
     ItemId:
       type: object
       properties:
         itemId:
           type: integer
           example: 5
-          
-    Error: # Schema for error response body
+      x-examples:
+        example-1:
+          itemId: 5
+    Error:
       type: object
       properties:
         code:
@@ -508,8 +572,19 @@ components:
       required:
         - code
         - message
-        
+      x-examples:
+        example-1:
+          code: string
+          message: string
     JsonSchemaValidation:
       type: array
       items:
         type: string
+tags:
+  - name: login
+  - name: cat
+  - name: delivery
+  - name: items
+  - name: item
+  - name: register
+  - name: users

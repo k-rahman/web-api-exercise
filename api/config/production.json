@@ -1,7 +1,7 @@
 {
   "database": {
-    "name": "opisk_t9abka00",
-    "host": "mysli.oamk.fi",
-    "port": "3306"
+    "name": "kirpputori",
+    "host": "abdelrahman.ddns.net",
+    "port": "6033"
   }
 }

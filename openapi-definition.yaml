@@ -6,6 +6,8 @@ info:
 servers: 
     - url: http://192.168.1.7:3200
       description: Development Server
+    - url: https://kirppu-tori.herokuapp.com/
+      description: Production server
   
 
 paths:
@@ -25,7 +27,7 @@ paths:
           required: false
           schema:
             type: integer
-            example: cars
+            example: 1
         - in: query
           name: country
           description: Filter items by country

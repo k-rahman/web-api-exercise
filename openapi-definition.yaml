@@ -430,7 +430,7 @@ components:
         categoryId:
           type: string
           writeOnly: true
-          example: 2
+          example: 1
         deliveryType:
           type: string
           readOnly: true

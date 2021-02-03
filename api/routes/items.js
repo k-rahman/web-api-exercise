@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const items = require('../services/items');
-const getImages = require('../middleware/images');
+const { getImages, saveImages } = require('../middleware/images');
 const validate = require('../middleware/validate').validateNewItem;
 const authenticate = require('../middleware/auth');
 const removeImages = require('../utils/images');
@@ -32,7 +32,7 @@ router.get('/:itemId', (req, res) => {
 });
 
 // post new item
-router.post('/', [authenticate, getImages, validate], (req, res) => {
+router.post('/', [authenticate, getImages, validate, saveImages], (req, res) => {
   const { user } = req;
 
   items
@@ -45,7 +45,7 @@ router.post('/', [authenticate, getImages, validate], (req, res) => {
 });
 
 // update item
-router.put('/:itemId', [authenticate, getImages, validate], (req, res) => {
+router.put('/:itemId', [authenticate, getImages, validate, saveImages], (req, res) => {
   const { itemId } = req.params;
   const { user } = req;
 

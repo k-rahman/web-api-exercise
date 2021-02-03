@@ -1,3 +1,5 @@
+const axios = require('axios');
+var FormData = require('form-data');
 const multer = require('multer');
 const fs = require('fs');
 const upload = multer({ dest: './public/uploads/' });
@@ -14,9 +16,26 @@ const getImages = (req, res, next) => {
       // console.log('images are missing!');
     }
 
+
+
     next();
   });
 };
 
+// saving on different server because deploying to Heroku removes files
+const saveImages = (req, res, next) => {
+  var form = new FormData();
 
-module.exports = getImages;
+  req.files.forEach(file =>
+    form.append('images', fs.createReadStream(`${file.path}-${file.originalname}`))
+  );
+  axios.post('http://abdelrahman.ddns.net:3200', form, { headers: form.getHeaders() });
+
+  next();
+};
+
+
+module.exports = {
+  getImages,
+  saveImages
+};

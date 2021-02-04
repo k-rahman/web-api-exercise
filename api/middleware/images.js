@@ -29,7 +29,7 @@ const saveImages = (req, res, next) => {
   req.files.forEach(file =>
     form.append('images', fs.createReadStream(`${file.path}-${file.originalname}`))
   );
-  axios.post('http://abdelrahman.ddns.net:8880', form, { headers: form.getHeaders() });
+  axios.post('https://abdelrahman.ddns.net', form, { headers: form.getHeaders() });
 
   next();
 };

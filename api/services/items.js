@@ -15,7 +15,7 @@ const getItems = async query => {
   // images array coming back from mysql as String
   items.forEach(item => {
     const parsedImages = JSON.parse(item.images);
-    item.images = parsedImages;
+    item.images = parsedImages.filter(i => i !== null);
   });
 
   return items;

@@ -28,7 +28,7 @@ const getItemById = async itemId => {
   if (item.length === 0) throw error(404, "Item Doesn't Exist!");
 
   const parsedImages = JSON.parse(item[0].images);
-  item[0].images = parsedImages;
+  item[0].images = parsedImages.filter(i => i !== null);
 
   return item[0];
 };
@@ -46,7 +46,7 @@ const getItemByUser = async (itemId, userId) => {
   if (userItem.length === 0) throw error(403, "Unauthorized user!");
 
   const parsedImages = JSON.parse(userItem[0].images);
-  userItem[0].images = parsedImages;
+  userItem[0].images = parsedImages.filter(i => i !== null);
 
   return userItem[0];
 };

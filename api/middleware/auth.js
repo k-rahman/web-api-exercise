@@ -33,11 +33,11 @@ passport.use(
       secretOrKey: config.get("jwt"),
     },
     (payload, done) => {
-      const { userId } = payload;
+      const { user } = payload;
 
-      userId
+      user
         ? users
-            .getUserById(payload.userId) // throw error if user doesn't exist
+            .getUserById(user.userId) // throw error if user doesn't exist
             .then(user => done(null, user))
             .catch(e => done(e))
         : done(null, false);

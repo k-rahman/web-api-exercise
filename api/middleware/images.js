@@ -1,22 +1,23 @@
-const axios = require('axios');
-var FormData = require('form-data');
-const multer = require('multer');
-const fs = require('fs');
-const upload = multer({ dest: './public/uploads/' });
+const axios = require("axios");
+var FormData = require("form-data");
+const multer = require("multer");
+const fs = require("fs");
+const upload = multer({ dest: "./public/uploads/" });
 
 const getImages = (req, res, next) => {
-  upload.array('images', 4)(req, res, () => {
+  upload.array("images", 4)(req, res, () => {
     try {
       req.body.images = req.files.map(file => {
-        fs.rename(file.path, `${file.destination}${file.filename}-${file.originalname}`, _ => { })
+        fs.rename(
+          file.path,
+          `${file.destination}${file.filename}-${file.originalname}`,
+          _ => {}
+        );
         return `${file.filename}-${file.originalname}`;
       });
-    }
-    catch (e) {
+    } catch (e) {
       // console.log('images are missing!');
     }
-
-
 
     next();
   });
@@ -27,15 +28,19 @@ const saveImages = (req, res, next) => {
   var form = new FormData();
 
   req.files.forEach(file =>
-    form.append('images', fs.createReadStream(`${file.path}-${file.originalname}`))
+    form.append(
+      "images",
+      fs.createReadStream(`${file.path}-${file.originalname}`)
+    )
   );
-  axios.post('https://abdelrahman.ddns.net', form, { headers: form.getHeaders() });
+  axios.post("https://abdelrahman.ddns.net", form, {
+    headers: form.getHeaders(),
+  });
 
   next();
 };
 
-
 module.exports = {
   getImages,
-  saveImages
+  saveImages,
 };

@@ -437,29 +437,17 @@ components:
           format: phonenumber
           readOnly: true
           example: 044-777-7774
-        img1:
-          type: string
-          description: the image name as stored in the database
-          readOnly: true
-          example: vwcar1.jpg
-        img2:
-          type: string
-          readOnly: true
-          example: vwcar2.jpg
-        img3:
-          type: string
-          readOnly: true
-          example: vwcar3.jpg
-        img4:
-          type: string
-          readOnly: true
-          example: vwcar4.jpg
         images:
-          type: array
-          writeOnly: true
-          items:
-            type: string
-            format: binary
+          oneOf:
+            - type: array
+              writeOnly: true
+              items:
+                type: string
+                format: binary
+            - type: array
+              readOnly: true
+              items:
+                type: string
         category:
           type: string
           readOnly: true
@@ -498,10 +486,7 @@ components:
           city: Oulu
           sellerName: Juhani Metsa
           contactInfo: 044-777-7774
-          img1: vwcar1.jpg
-          img2: vwcar2.jpg
-          img3: vwcar3.jpg
-          img4: vwcar4.jpg
+          images: [vwcar1.jpg, vwcar2.jpg,vwcar3.jpg,vwcar4.jpg]
           category: cars
           deliveryType: pickup
           createdAt: '2021-01-30 17:41:05'

@@ -55,8 +55,16 @@ CREATE TABLE items (
         FULLTEXT (title, description)
 ) ENGINE = InnoDB;
 
-INSERT INTO categories (name) VALUE ('Cars');
+INSERT INTO categories (name, icon) VALUE ('Books', 'bookshelf');
+INSERT INTO categories (name, icon) VALUE ('Clothing', 'tshirt-crew');
+INSERT INTO categories (name, icon) VALUE ('Electronics', 'laptop-mac');
+INSERT INTO categories (name, icon) VALUE ('Furniture', 'bed-king');
+INSERT INTO categories (name, icon) VALUE ('Games', 'cards');
+INSERT INTO categories (name, icon) VALUE ('Others', 'exclamation-thick');
+
 INSERT INTO deliveryTypes (name) VALUE ('Pickup');
+INSERT INTO deliveryTypes (name) VALUE ('Delivery');
+
 INSERT INTO users (firstname, lastname, email, password, phone)
 	VALUES ('Karim', 'Abdelrahman', 'karim@hotmail.com', '12345', '044-777-7777');
 

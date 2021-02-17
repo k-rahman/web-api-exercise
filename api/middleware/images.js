@@ -35,6 +35,8 @@ const saveImages = (req, res, next) => {
   );
   axios.post("https://abdelrahman.ddns.net", form, {
     headers: form.getHeaders(),
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity,
   });
 
   next();

@@ -436,7 +436,7 @@ components:
           type: string
           format: phonenumber
           readOnly: true
-          example: 044-777-7774
+          example: 0447777774
         images:
           oneOf:
             - type: array
@@ -521,14 +521,14 @@ components:
           type: string
           minLength: 12
           format: phonenumber
-          example: 044-777-7777
+          example: 0447777777
       x-examples:
         example-1:
           userId: 23
           firstname: John
           lastname: Smith
           email: john.smith@mail.com
-          phone: 044-777-7777
+          phone: 0447777777
     UserId:
       type: object
       properties:

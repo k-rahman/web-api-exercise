@@ -10,28 +10,28 @@ const getSelectQuery = _ =>
 
 const getSearchQuery = query => {
   let { keyword, category, country, city, date } = query;
-  let selectItem = getSelectQuery();
+  let selectItems = getSelectQuery();
 
-  selectItem += " WHERE 1 = 1";
+  selectItems += " WHERE 1 = 1";
 
   if (keyword && keyword.length !== 0) {
     keyword = keyword.trim().replace(" ", "* ");
     keyword = keyword.padEnd(keyword.length + 1, "*");
-    selectItem += ` AND MATCH (i.title, i.description) AGAINST ('${keyword}' IN BOOLEAN MODE)`;
+    selectItems += ` AND MATCH (i.title, i.description) AGAINST ('${keyword}' IN BOOLEAN MODE)`;
   }
 
   if (category && category.length !== 0)
-    selectItem += ` AND i.category = ${category}`;
+    selectItems += ` AND i.category = ${category}`;
 
   if (country && country.length !== 0)
-    selectItem += ` AND i.country LIKE '%${country}%'`;
+    selectItems += ` AND i.country LIKE '%${country}%'`;
 
-  if (city && city.length !== 0) selectItem += ` AND i.city LIKE '%${city}%'`;
+  if (city && city.length !== 0) selectItems += ` AND i.city LIKE '%${city}%'`;
 
   if (date && date.length !== 0)
-    selectItem += ` AND i.createdAt LIKE '${date}%'`;
+    selectItems += ` AND i.createdAt LIKE '${date}%'`;
 
-  return selectItem;
+  return selectItems;
 };
 
 module.exports = {

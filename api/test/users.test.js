@@ -105,7 +105,7 @@ describe("users", () => {
         lastname: "smith",
         email: "john.smith@gmail.com",
         password: "12345",
-        phone: "044-777-7777",
+        phone: "0447777777",
       };
     });
 
@@ -390,7 +390,7 @@ describe("users", () => {
 
     // phone isn't string
     it("Should return 400 and error message, if phone isn't string", async () => {
-      updatedUser.phone = 044 - 777;
+      updatedUser.phone = 044777;
 
       const res = await exec();
 
@@ -415,14 +415,14 @@ describe("users", () => {
       assert.propertyVal(
         res.error,
         "text",
-        '["should NOT have fewer than 12 characters"]'
+        '["should NOT have fewer than 10 characters"]'
       );
       assert.jsonSchema(res.body, ajvSchema);
     });
 
     // phone length is less than 12 characters
-    it("Should return 400 and error message, if phone is less than 12 characters", async () => {
-      updatedUser.phone = "044-777-777";
+    it("Should return 400 and error message, if phone is less than 10 characters", async () => {
+      updatedUser.phone = "123456789";
 
       const res = await exec();
 
@@ -433,7 +433,7 @@ describe("users", () => {
       assert.propertyVal(
         res.error,
         "text",
-        '["should NOT have fewer than 12 characters"]'
+        '["should NOT have fewer than 10 characters"]'
       );
       assert.jsonSchema(res.body, ajvSchema);
     });

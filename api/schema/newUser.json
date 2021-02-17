@@ -11,16 +11,10 @@
       "lastname": "karim",
       "email": "karim@hotmail.com",
       "password": "12345",
-      "phone": "044-777-7777"
+      "phone": "0447777777"
     }
   ],
-  "required": [
-    "firstname",
-    "lastname",
-    "email",
-    "password",
-    "phone"
-  ],
+  "required": ["firstname", "lastname", "email", "password", "phone"],
   "properties": {
     "firstname": {
       "$id": "#/properties/firstname",
@@ -29,9 +23,7 @@
       "title": "The firstname schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": [
-        "john"
-      ]
+      "examples": ["john"]
     },
     "lastname": {
       "$id": "#/properties/lastname",
@@ -40,9 +32,7 @@
       "title": "The lastname schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": [
-        "smith"
-      ]
+      "examples": ["smith"]
     },
     "email": {
       "$id": "#/properties/email",
@@ -51,9 +41,7 @@
       "title": "The email schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": [
-        "karim@hotmail.com"
-      ]
+      "examples": ["karim@hotmail.com"]
     },
     "password": {
       "$id": "#/properties/password",
@@ -62,20 +50,16 @@
       "title": "The password schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": [
-        "12345"
-      ]
+      "examples": ["12345"]
     },
     "phone": {
       "$id": "#/properties/phone",
       "type": "string",
-      "minLength": 12,
+      "minLength": 10,
       "title": "The phone schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": [
-        "044-777-7777"
-      ]
+      "examples": ["0447777777"]
     }
   },
   "additionalProperties": false

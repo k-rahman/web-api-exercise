@@ -11,16 +11,10 @@
       "firstname": "John",
       "lastname": "Smith",
       "email": "john.smith@mail.com",
-      "phone": "044-777-7777"
+      "phone": "0447777777"
     }
   ],
-  "required": [
-    "userId",
-    "firstname",
-    "lastname",
-    "email",
-    "phone"
-  ],
+  "required": ["userId", "firstname", "lastname", "email", "phone"],
   "properties": {
     "userId": {
       "$id": "#/properties/userId",
@@ -28,9 +22,7 @@
       "title": "The userId schema",
       "description": "An explanation about the purpose of this instance.",
       "default": 0,
-      "examples": [
-        23
-      ]
+      "examples": [23]
     },
     "firstname": {
       "$id": "#/properties/firstname",
@@ -38,9 +30,7 @@
       "title": "The firstname schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": [
-        "John"
-      ]
+      "examples": ["John"]
     },
     "lastname": {
       "$id": "#/properties/lastname",
@@ -48,9 +38,7 @@
       "title": "The lastname schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": [
-        "Smith"
-      ]
+      "examples": ["Smith"]
     },
     "email": {
       "$id": "#/properties/email",
@@ -58,9 +46,7 @@
       "title": "The email schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": [
-        "john.smith@mail.com"
-      ]
+      "examples": ["john.smith@mail.com"]
     },
     "phone": {
       "$id": "#/properties/phone",
@@ -68,9 +54,7 @@
       "title": "The phone schema",
       "description": "An explanation about the purpose of this instance.",
       "default": "",
-      "examples": [
-        "044-777-7777"
-      ]
+      "examples": ["0447777777"]
     }
   },
   "additionalProperties": false

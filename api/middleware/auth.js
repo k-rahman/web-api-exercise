@@ -37,7 +37,7 @@ passport.use(
 
       user
         ? users
-            .getUserById(user.userId) // throw error if user doesn't exist
+            .getUserById(user.id) // throw error if user doesn't exist
             .then(user => done(null, user))
             .catch(e => done(e))
         : done(null, false);

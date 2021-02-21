@@ -8,12 +8,12 @@
   "examples": [
     [
       {
-        "deliveryTypeId": 1,
+        "id": 1,
         "name": "pickup",
         "icon": "pickup.jpg"
       },
       {
-        "deliveryTypeId": 2,
+        "id": 2,
         "name": "shipping",
         "icon": "shipping.jpg"
       }
@@ -31,26 +31,20 @@
         "default": {},
         "examples": [
           {
-            "deliveryTypeId": 1,
+            "id": 1,
             "name": "pickup",
             "icon": "pickup.jpg"
           }
         ],
-        "required": [
-          "deliveryTypeId",
-          "name",
-          "icon"
-        ],
+        "required": ["id", "name", "icon"],
         "properties": {
-          "deliveryTypeId": {
+          "id": {
             "$id": "#/items/anyOf/0/properties/deliveryTypeId",
             "type": "integer",
             "title": "The deliveryTypeId schema",
             "description": "An explanation about the purpose of this instance.",
             "default": 0,
-            "examples": [
-              1
-            ]
+            "examples": [1]
           },
           "name": {
             "$id": "#/items/anyOf/0/properties/name",
@@ -58,19 +52,15 @@
             "title": "The name schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
-            "examples": [
-              "pickup"
-            ]
+            "examples": ["pickup"]
           },
           "icon": {
             "$id": "#/items/anyOf/0/properties/icon",
-            "type": "string",
+            "type": "null",
             "title": "The icon schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
-            "examples": [
-              "pickup.jpg"
-            ]
+            "examples": [null]
           }
         },
         "additionalProperties": false

@@ -14,9 +14,7 @@
       "city": "Oulu",
       "category": "1",
       "deliveryType": "1",
-      "images": [
-        "./public/uploads/c45445-454-454-454-car-pic.jpg"
-      ]
+      "images": ["./public/uploads/c45445-454-454-454-car-pic.jpg"]
     }
   ],
   "required": [
@@ -37,9 +35,7 @@
       "description": "Title is required with minimum length of 5 characters",
       "minLength": 5,
       "default": "",
-      "examples": [
-        "used VW 2010"
-      ]
+      "examples": ["used VW 2010"]
     },
     "description": {
       "$id": "#/properties/description",
@@ -48,9 +44,7 @@
       "description": "An explanation about the purpose of this instance.",
       "minLength": 5,
       "default": "",
-      "examples": [
-        "Selling VW car in good condition"
-      ]
+      "examples": ["Selling VW car in good condition"]
     },
     "price": {
       "$id": "#/properties/price",
@@ -60,9 +54,7 @@
       "description": "An explanation about the purpose of this instance.",
       "minLength": 1,
       "default": "0.0",
-      "examples": [
-        "5500.5"
-      ]
+      "examples": ["5500.5"]
     },
     "country": {
       "$id": "#/properties/country",
@@ -71,9 +63,7 @@
       "description": "An explanation about the purpose of this instance.",
       "minLength": 1,
       "default": "",
-      "examples": [
-        "Finland"
-      ]
+      "examples": ["Finland"]
     },
     "city": {
       "$id": "#/properties/city",
@@ -82,9 +72,7 @@
       "description": "An explanation about the purpose of this instance.",
       "minLength": 1,
       "default": "",
-      "examples": [
-        "Oulu"
-      ]
+      "examples": ["Oulu"]
     },
     "categoryId": {
       "$id": "#/properties/categoryId",
@@ -93,9 +81,7 @@
       "description": "An explanation about the purpose of this instance.",
       "minLength": 1,
       "default": "0",
-      "examples": [
-        "1"
-      ]
+      "examples": ["1"]
     },
     "deliveryTypeId": {
       "$id": "#/properties/deliveryTypeId",
@@ -104,9 +90,7 @@
       "description": "An explanation about the purpose of this instance.",
       "minLength": 1,
       "default": "0",
-      "examples": [
-        "1"
-      ]
+      "examples": ["1"]
     },
     "images": {
       "$id": "#/properties/images",
@@ -118,9 +102,7 @@
       "imageRequired": true,
       "default": [],
       "examples": [
-        [
-          "./public/uploads/c498bcc0-cd38-40c5-aaf1-7c63b60661ee-register.jpg"
-        ]
+        ["./public/uploads/c498bcc0-cd38-40c5-aaf1-7c63b60661ee-register.jpg"]
       ],
       "items": [
         {

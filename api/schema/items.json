@@ -8,7 +8,7 @@
   "examples": [
     [
       {
-        "itemId": 10,
+        "id": 10,
         "title": "used VW 2010",
         "description": "Selling VW car in good condition",
         "price": 5500.5,
@@ -34,7 +34,7 @@
       "default": {},
       "examples": [
         {
-          "itemId": 10,
+          "id": 10,
           "title": "used VW 2010",
           "description": "Selling VW car in good condition",
           "price": 5500.5,
@@ -50,7 +50,7 @@
         }
       ],
       "required": [
-        "itemId",
+        "id",
         "title",
         "description",
         "price",
@@ -65,8 +65,8 @@
         "updatedAt"
       ],
       "properties": {
-        "itemId": {
-          "$id": "#/items/anyOf/0/properties/itemId",
+        "id": {
+          "$id": "#/items/anyOf/0/properties/id",
           "type": "integer",
           "title": "The itemId schema",
           "description": "An explanation about the purpose of this instance.",
@@ -144,19 +144,87 @@
         },
         "category": {
           "$id": "#/items/anyOf/0/properties/category",
-          "type": "string",
+          "type": "object",
           "title": "The category schema",
           "description": "An explanation about the purpose of this instance.",
-          "default": "",
-          "examples": ["cars"]
+          "default": {},
+          "examples": [
+            {
+              "id": "1",
+              "name": "Furniture",
+              "icon": "furniture"
+            }
+          ],
+          "required": ["id", "name", "icon"],
+          "properties": {
+            "id": {
+              "$id": "#/properties/category/properties/id",
+              "type": "number",
+              "title": "The id schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": ["1"]
+            },
+            "name": {
+              "$id": "#/properties/category/properties/name",
+              "type": "string",
+              "title": "The name schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": ["Furniture"]
+            },
+            "icon": {
+              "$id": "#/properties/category/properties/icon",
+              "type": "string",
+              "title": "The icon schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": ["furniture"]
+            }
+          },
+          "additionalProperties": true
         },
         "deliveryType": {
-          "$id": "#/items/anyOf/0/properties/deliveryType",
-          "type": "string",
+          "$id": "#/properties/deliveryType",
+          "type": "object",
           "title": "The deliveryType schema",
           "description": "An explanation about the purpose of this instance.",
-          "default": "",
-          "examples": ["pickup"]
+          "default": {},
+          "examples": [
+            {
+              "id": "1",
+              "name": "Pickup",
+              "icon": null
+            }
+          ],
+          "required": ["id", "name", "icon"],
+          "properties": {
+            "id": {
+              "$id": "#/properties/deliveryType/properties/id",
+              "type": "number",
+              "title": "The id schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": ["1"]
+            },
+            "name": {
+              "$id": "#/properties/deliveryType/properties/name",
+              "type": "string",
+              "title": "The name schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": "",
+              "examples": ["Pickup"]
+            },
+            "icon": {
+              "$id": "#/properties/deliveryType/properties/icon",
+              "type": "null",
+              "title": "The icon schema",
+              "description": "An explanation about the purpose of this instance.",
+              "default": null,
+              "examples": [null]
+            }
+          },
+          "additionalProperties": true
         },
         "createdAt": {
           "$id": "#/items/anyOf/0/properties/createdAt",

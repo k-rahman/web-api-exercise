@@ -8,12 +8,12 @@
   "examples": [
     [
       {
-        "categoryId": 2,
+        "id": 2,
         "name": "cars",
         "icon": "454.jpg"
       },
       {
-        "categoryId": 2,
+        "id": 2,
         "name": "electronics",
         "icon": "4.jpg"
       }
@@ -31,26 +31,20 @@
         "default": {},
         "examples": [
           {
-            "categoryId": 2,
+            "id": 2,
             "name": "cars",
             "icon": "454.jpg"
           }
         ],
-        "required": [
-          "categoryId",
-          "name",
-          "icon"
-        ],
+        "required": ["id", "name", "icon"],
         "properties": {
-          "categoryId": {
+          "id": {
             "$id": "#/items/anyOf/0/properties/categoryId",
             "type": "integer",
             "title": "The categoryId schema",
             "description": "An explanation about the purpose of this instance.",
             "default": 0,
-            "examples": [
-              2
-            ]
+            "examples": [2]
           },
           "name": {
             "$id": "#/items/anyOf/0/properties/name",
@@ -58,9 +52,7 @@
             "title": "The name schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
-            "examples": [
-              "cars"
-            ]
+            "examples": ["cars"]
           },
           "icon": {
             "$id": "#/items/anyOf/0/properties/icon",
@@ -68,9 +60,7 @@
             "title": "The icon schema",
             "description": "An explanation about the purpose of this instance.",
             "default": "",
-            "examples": [
-              "454.jpg"
-            ]
+            "examples": ["454.jpg"]
           }
         },
         "additionalProperties": false

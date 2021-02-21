@@ -1,23 +1,23 @@
-const config = require('config');
-const mysql = require('mysql');
+const config = require("config");
+const mysql = require("mysql");
 
 const dbCredentials = {
   connectionLimit: 10,
-  host: config.get('database.host'),
-  database: config.get('database.name'),
-  port: config.get('database.port'),
-  user: config.get('database.username'),
-  password: config.get('database.password')
+  host: config.get("database.host"),
+  database: config.get("database.name"),
+  port: config.get("database.port"),
+  user: config.get("database.username"),
+  password: config.get("database.password"),
 };
 
 const pool = mysql.createPool(dbCredentials);
-console.log(`Connected to ${config.get('database.name')} ...`);
+console.log(`Connected to ${config.get("database.name")} ...`);
 
 const createTables = async () => {
   try {
     await dbApi.query(`
       CREATE TABLE IF NOT EXISTS users (
-        userId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+        id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
         firstname VARCHAR(50) NOT NULL,
         lastname VARCHAR(50) NOT NULL,
         email VARCHAR(50) NOT NULL,
@@ -26,19 +26,19 @@ const createTables = async () => {
   `);
     await dbApi.query(`
     CREATE TABLE IF NOT EXISTS categories (
-      categoryId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
       name VARCHAR(50) NOT NULL,
       icon VARCHAR(100) NULL);
   `);
     await dbApi.query(`
     CREATE TABLE IF NOT EXISTS deliveryTypes (
-      deliveryTypeId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
       name VARCHAR(50) NOT NULL,
       icon VARCHAR(100) NULL); 
   `);
     await dbApi.query(`
         CREATE TABLE IF NOT EXISTS items (
-          itemId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+          id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
           title VARCHAR(100) NOT NULL,
           description TEXT NOT NULL,
           price FLOAT NOT NULL,
@@ -54,21 +54,20 @@ const createTables = async () => {
           createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
           updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
           CONSTRAINT FOREIGN KEY (category)
-              REFERENCES categories (categoryId)
+              REFERENCES categories (id)
               ON UPDATE CASCADE,
           CONSTRAINT FOREIGN KEY (deliveryType)
-              REFERENCES deliveryTypes (deliveryTypeId)
+              REFERENCES deliveryTypes (id)
               ON UPDATE CASCADE,
           CONSTRAINT FOREIGN KEY (seller)
-              REFERENCES users (userId)
+              REFERENCES users (id)
               ON DELETE CASCADE ON UPDATE CASCADE,
           FULLTEXT ( title , description )
       )  ENGINE=INNODB;
   `);
+  } catch (e) {
+    console.log(e);
   }
-  catch (e) {
-    console.log(e)
-  };
 };
 
 const dropTables = async () => {
@@ -77,8 +76,7 @@ const dropTables = async () => {
     await dbApi.query(`DROP TABLE IF EXISTS users;`);
     await dbApi.query(`DROP TABLE IF EXISTS categories;`);
     await dbApi.query(`DROP TABLE IF EXISTS deliveryTypes;`);
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
   }
 };
@@ -91,28 +89,27 @@ const populateTables = async () => {
   `);
 
     await dbApi.query(`
-      INSERT INTO categories (name, icon) VALUE ('cars', 'cars-icon.jpg');
+      INSERT INTO categories (name, icon) VALUE ('cars', 'cars-icon');
   `);
 
     await dbApi.query(`
-      INSERT INTO deliveryTypes (name, icon) VALUE ('pickup', 'pickup-icon.jpg');
+      INSERT INTO deliveryTypes (name, icon) VALUE ('pickup', null);
   `);
 
     await dbApi.query(`
       INSERT INTO items (title, description, price, country, city, img1, category, deliveryType, seller) 
         VALUES ('used VW', 'Very good condition 1990 VW', 500, 'Finland', 'Oulu', '848755-car.jpg', 1, 1, 1);
   `);
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
   }
 };
 
 const cleanTables = async () => {
-  await dbApi.query('DELETE FROM users');
-  await dbApi.query('DELETE FROM categories');
-  await dbApi.query('DELETE FROM deliveryTypes');
-  await dbApi.query('DELETE FROM items');
+  await dbApi.query("DELETE FROM users");
+  await dbApi.query("DELETE FROM categories");
+  await dbApi.query("DELETE FROM deliveryTypes");
+  await dbApi.query("DELETE FROM items");
 };
 
 const dbApi = {
@@ -128,7 +125,7 @@ const dbApi = {
         resolve(result);
       })
     ),
-  close: () => pool.end()
-}
+  close: () => pool.end(),
+};
 
 module.exports = dbApi;

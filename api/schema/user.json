@@ -7,19 +7,19 @@
   "default": {},
   "examples": [
     {
-      "userId": 23,
+      "id": 23,
       "firstname": "John",
       "lastname": "Smith",
       "email": "john.smith@mail.com",
       "phone": "0447777777"
     }
   ],
-  "required": ["userId", "firstname", "lastname", "email", "phone"],
+  "required": ["id", "firstname", "lastname", "email", "phone"],
   "properties": {
-    "userId": {
-      "$id": "#/properties/userId",
+    "id": {
+      "$id": "#/properties/id",
       "type": "integer",
-      "title": "The userId schema",
+      "title": "The id schema",
       "description": "An explanation about the purpose of this instance.",
       "default": 0,
       "examples": [23]

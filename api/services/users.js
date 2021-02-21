@@ -14,7 +14,7 @@ const getAllUsers = async _ => {
 
 // return user by id
 const getUserById = async userId => {
-  const user = await db.query("SELECT * FROM users WHERE userId = ? ", userId);
+  const user = await db.query("SELECT * FROM users WHERE id = ? ", userId);
 
   if (user.length === 0) throw error(404, "User Doesn't Exist!");
 
@@ -59,7 +59,7 @@ const updateUser = async (userData, userId) => {
   ];
 
   const userEmail = await db.query(
-    "SELECT email FROM users WHERE email = ? and userId <> ?",
+    "SELECT email FROM users WHERE email = ? and id <> ?",
     email,
     userId
   );
@@ -67,14 +67,14 @@ const updateUser = async (userData, userId) => {
   if (userEmail.length > 0) throw error(400, "Email Already Exists!");
 
   await db.query(
-    "UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ?, phone = ? WHERE userId = ?",
+    "UPDATE users SET firstname = ?, lastname = ?, email = ?, password = ?, phone = ? WHERE id = ?",
     ...updatedUser
   );
 };
 
 // delete user
 const deleteUser = async userId => {
-  await db.query("DELETE FROM users WHERE userId = ?", userId);
+  await db.query("DELETE FROM users WHERE id = ?", userId);
 };
 
 module.exports = {

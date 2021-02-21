@@ -58,7 +58,7 @@ describe("users", () => {
     it("Should not pass validation, if userId is missing from the response body)", async () => {
       const res = await exec();
 
-      delete res.body.userId;
+      delete res.body.id;
 
       expect(res.body).to.not.be.jsonSchema(userSchema);
     });
@@ -139,11 +139,12 @@ describe("users", () => {
 
     // email already exists
     it("Should return 400, if email already exists with different userId", async () => {
-      const { insertId: userId } = await users.createUser(updatedUser);
-      const userInfo = await users.getUserById(userId);
+      const { insertId: id } = await users.createUser(updatedUser);
+      const userInfo = await users.getUserById(id);
+      console.log(userInfo);
       token = await generateToken(userInfo);
       updatedUser.email = "karim@mail.com"; // this email is alrdy in db from db.populate();
-
+      console.log(updatedUser);
       const res = await exec();
 
       assert.property(res, "status");

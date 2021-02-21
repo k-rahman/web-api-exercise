@@ -52,7 +52,7 @@ describe("/items", () => {
     });
 
     it("Should return items, if they match the query string criteria", async () => {
-      path = "/items?category=1&country=Finland";
+      path = "/items?country=Finland&city=Oulu";
 
       const res = await exec();
 
@@ -60,26 +60,8 @@ describe("/items", () => {
       expect(res.body).to.be.jsonSchema(itemsSchema);
     });
 
-    it("Should return 404, if items don't match the query string criteria", async () => {
-      path = "/items?category=11&date=2019-02-02";
-
-      const res = await exec();
-
-      expect(res.status).to.equal(404);
-      expect(res.body).to.be.jsonSchema(errorSchema);
-    });
-
     it("Should return 404, if items table is empty", async () => {
       await db.clean();
-      const res = await exec();
-
-      expect(res.status).to.equal(404);
-      expect(res.body).to.be.jsonSchema(errorSchema);
-    });
-
-    it("Should return 404, if no item met the query string criteria", async () => {
-      path = "/items?category=2"; // item with category=2 doesn't exist
-
       const res = await exec();
 
       expect(res.status).to.equal(404);

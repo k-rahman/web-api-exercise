@@ -19,6 +19,21 @@ router.get("/", (req, res) => {
     );
 });
 
+// return user items
+router.get("/me", authenticate, (req, res) => {
+  const { user } = req;
+  const { id } = user;
+
+  items
+    .getItemsByUser(id)
+    .then(items => res.status(200).send(items))
+    .catch(e =>
+      e.name === 404
+        ? res.status(404).send({ code: "404", message: e.message })
+        : res.sendStatus(500)
+    );
+});
+
 // return item by id
 router.get("/:itemId", (req, res) => {
   const { itemId } = req.params;
@@ -41,7 +56,7 @@ router.post(
     const { user } = req;
 
     items
-      .createNewItem({ ...req.body, sellerId: user.userId })
+      .createNewItem({ ...req.body, sellerId: user.id })
       .then(result => res.status(201).send({ itemId: result.insertId }))
       .catch(_ => {
         removeImages(req.body.images);
@@ -59,7 +74,7 @@ router.put(
     const { user } = req;
 
     items
-      .updateItem({ ...req.body, sellerId: user.userId }, itemId)
+      .updateItem({ ...req.body, sellerId: user.id }, itemId)
       .then(_ => res.sendStatus(204))
       .catch(e => {
         removeImages(req.body.images);
@@ -69,7 +84,8 @@ router.put(
         if (e.name === 404)
           return res.status(404).send({ code: "404", message: e.message });
 
-        res.sendStatus(500);
+        console.log(e);
+        // res.sendStatus(500);
       });
   }
 );
@@ -80,7 +96,7 @@ router.delete("/:itemId", authenticate, (req, res) => {
   const { user } = req;
 
   items
-    .deleteItem(itemId, user.userId)
+    .deleteItem(itemId, user.id)
     .then(_ => res.sendStatus(204))
     .catch(e => {
       if (e.name === 403)

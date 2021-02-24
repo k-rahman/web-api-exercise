@@ -228,7 +228,7 @@ paths:
                 items:
                   type: object
                   properties:
-                    categoryId:
+                    id:
                       type: integer
                       example: 4
                     name:
@@ -258,7 +258,7 @@ paths:
                 items:
                   type: object
                   properties:
-                    deliveryTypeId:
+                    id:
                       type: integer
                       example: 2
                     name:
@@ -488,17 +488,35 @@ components:
               items:
                 type: string
         category:
-          type: string
+          type: object
+          properties:
+            id:
+              type: string
+              example: 1
+            name:
+              type: string
+              example: Books
+            icon:
+              type: string
+              example: bookshelf
           readOnly: true
-          example: cars
         categoryId:
           type: string
           writeOnly: true
           example: '1'
         deliveryType:
-          type: string
+          type: object
+          properties:
+            id:
+              type: string
+              example: 1
+            name:
+              type: string
+              example: Pickup
+            icon:
+              type: string
+              example: null
           readOnly: true
-          example: pickup
         deliveryTypeId:
           type: string
           writeOnly: true
@@ -606,7 +624,7 @@ components:
         type: string
 tags:
   - name: login
-  - name: cat
+  - name: category
   - name: delivery
   - name: items
   - name: item

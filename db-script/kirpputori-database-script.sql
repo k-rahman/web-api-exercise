@@ -60,7 +60,11 @@ INSERT INTO categories (name, icon) VALUE ('Clothing', 'tshirt-crew');
 INSERT INTO categories (name, icon) VALUE ('Electronics', 'laptop-mac');
 INSERT INTO categories (name, icon) VALUE ('Furniture', 'bed-king');
 INSERT INTO categories (name, icon) VALUE ('Games', 'cards');
+INSERT INTO categories (name, icon) VALUE ('Music', 'guitar-acoustic');
+INSERT INTO categories (name, icon) VALUE ('Accessories', 'necklace');
+INSERT INTO categories (name, icon) VALUE ('Utensils', 'silverware-fork-knife');
 INSERT INTO categories (name, icon) VALUE ('Others', 'exclamation-thick');
+
 
 INSERT INTO deliveryTypes (name) VALUE ('Pickup');
 INSERT INTO deliveryTypes (name) VALUE ('Delivery');

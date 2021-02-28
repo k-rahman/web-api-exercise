@@ -141,10 +141,8 @@ describe("users", () => {
     it("Should return 400, if email already exists with different userId", async () => {
       const { insertId: id } = await users.createUser(updatedUser);
       const userInfo = await users.getUserById(id);
-      console.log(userInfo);
       token = await generateToken(userInfo);
       updatedUser.email = "karim@mail.com"; // this email is alrdy in db from db.populate();
-      console.log(updatedUser);
       const res = await exec();
 
       assert.property(res, "status");

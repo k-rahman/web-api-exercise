@@ -7,8 +7,9 @@ DROP TABLE users;
 DROP TABLE categories;
 DROP TABLE deliveryTypes;
 
-CREATE TABLE IF NOT EXISTS users (
-	userId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+
+CREATE TABLE users (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	firstname VARCHAR(50) NOT NULL,
 	lastname VARCHAR(50) NOT NULL,
 	email VARCHAR(50) NOT NULL,
@@ -17,52 +18,59 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE categories (
-	categoryId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(50) NOT NULL,
 	icon VARCHAR(100) NULL
 );
 
 CREATE TABLE deliveryTypes (
-	deliveryTypeId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(50) NOT NULL,
 	icon VARCHAR(100) NULL
 );
 
-CREATE TABLE IF NOT EXISTS items (
-    itemId INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
-    description TEXT NOT NULL,
-    price FLOAT NOT NULL,
-    country VARCHAR(50) NOT NULL,
-    city VARCHAR(50) NOT NULL,
-    img1 VARCHAR(100) NOT NULL,
-    img2 VARCHAR(100) NULL,
-    img3 VARCHAR(100) NULL,
-    img4 VARCHAR(100) NULL,
-    category INT UNSIGNED NOT NULL,
-    deliveryType INT UNSIGNED NOT NULL,
-    seller INT UNSIGNED NOT NULL,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE items (
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	title VARCHAR(100) NOT NULL,
+	description TEXT NOT NULL,
+	price FLOAT NOT NULL,
+	country VARCHAR(50) NOT NULL,
+	city VARCHAR(50) NOT NULL,
+	img1 VARCHAR(250) NOT NULL,
+	img2 VARCHAR(250) NULL,
+	img3 VARCHAR(250) NULL,
+	img4 VARCHAR(250) NULL,
+	category INT UNSIGNED NOT NULL,
+	deliveryType INT UNSIGNED NOT NULL,
+	seller INT UNSIGNED NOT NULL,
+	createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FOREIGN KEY (category)
-        REFERENCES categories (categoryId)
+	CONSTRAINT FOREIGN KEY 
+		(category)
+		REFERENCES categories(id)
         ON UPDATE CASCADE,
-    CONSTRAINT FOREIGN KEY (deliveryType)
-        REFERENCES deliveryTypes (deliveryTypeId)
+	CONSTRAINT FOREIGN KEY 
+		(deliveryType)
+		REFERENCES deliveryTypes(id)
         ON UPDATE CASCADE,
-    CONSTRAINT FOREIGN KEY (seller)
-        REFERENCES users (userId)
-        ON DELETE CASCADE ON UPDATE CASCADE,
-    FULLTEXT ( title , description )
-)  ENGINE=INNODB;
+	CONSTRAINT FOREIGN KEY 
+		(seller)
+		REFERENCES users(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+        FULLTEXT (title, description)
+) ENGINE = InnoDB;
 
-INSERT INTO categories (name) VALUE ('Cars');
+INSERT INTO categories (name, icon) VALUE ('Books', 'bookshelf');
+INSERT INTO categories (name, icon) VALUE ('Clothing', 'tshirt-crew');
+INSERT INTO categories (name, icon) VALUE ('Electronics', 'laptop-mac');
+INSERT INTO categories (name, icon) VALUE ('Furniture', 'bed-king');
+INSERT INTO categories (name, icon) VALUE ('Games', 'cards');
+INSERT INTO categories (name, icon) VALUE ('Music', 'guitar-acoustic');
+INSERT INTO categories (name, icon) VALUE ('Accessories', 'necklace');
+INSERT INTO categories (name, icon) VALUE ('Utensils', 'silverware-fork-knife');
+INSERT INTO categories (name, icon) VALUE ('Others', 'exclamation-thick');
+
+
 INSERT INTO deliveryTypes (name) VALUE ('Pickup');
-INSERT INTO users (firstname, lastname, email, password, phone)
-	VALUES ('Karim', 'Abdelrahman', 'karim@hotmail.com', '12345', '044-777-7777');
-
-INSERT INTO items (title, description, price, country, city, img1, category, deliveryType, seller) 
-	VALUES ('used VW', 'Very good condition 1990 VW', 500, 'Finland', 'Oulu', '/uploads/vw.jpg', 1, 1, 1);
-
-DELETE FROM users;
-DELETE FROM items;
+INSERT INTO deliveryTypes (name) VALUE ('Delivery');
